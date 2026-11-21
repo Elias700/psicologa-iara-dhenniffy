@@ -1,0 +1,77 @@
+<!-- Texto estático: não precisa de JS (hydrate never). Os links funcionam como links comuns. -->
+@defer (hydrate never; on immediate) {
+<article class="privacy container" aria-labelledby="privacy-title">
+  <p class="eyebrow">Transparência</p>
+  <h1 id="privacy-title">Política de privacidade</h1>
+  <p class="lead">
+    Esta página explica, em linguagem simples, quais dados este site recebe, para que eles servem e quais são os
+    seus direitos, de acordo com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).
+  </p>
+
+  <h2>Quem cuida dos seus dados</h2>
+  <p>
+    {{ pro.name }}, {{ pro.role }}, {{ pro.crp }}. Ela é a responsável pelos dados enviados por este site.
+    @if (email) {
+      Para qualquer pedido sobre seus dados, escreva para <a class="link" [href]="'mailto:' + email">{{ email }}</a>.
+    }
+  </p>
+
+  <h2>Quais dados o site recebe</h2>
+  <ul>
+    <li>
+      <strong>Pelo formulário de contato:</strong> seu nome, a forma de contato que você escolheu (WhatsApp ou e-mail),
+      o número ou e-mail, o melhor horário e, se você quiser, uma mensagem curta.
+    </li>
+    <li>
+      <strong>Pelo WhatsApp, e-mail ou Instagram:</strong> o que você enviar nesses aplicativos, que têm as
+      próprias regras de privacidade.
+    </li>
+  </ul>
+  <p>
+    Este site <strong>não usa cookies de rastreamento nem ferramentas de publicidade</strong>. A única informação
+    guardada no seu navegador é a sua escolha no botão "Reduzir movimento", para lembrar dela na próxima visita.
+  </p>
+
+  <h2>Para que os dados são usados</h2>
+  <p>
+    Só para responder ao seu contato e combinar um possível atendimento. Os dados não são vendidos, não são usados
+    para propaganda e não são compartilhados com outras pessoas, a não ser com o serviço técnico que recebe o
+    formulário.
+  </p>
+
+  <h2>Dados de saúde e sigilo</h2>
+  <p>
+    Informações sobre saúde mental são dados sensíveis pela LGPD. Por isso, o formulário pede só o necessário para
+    eu responder. <strong>Não escreva detalhes sobre sua saúde no formulário.</strong> Isso pode ser conversado com
+    calma, em particular.
+  </p>
+  <p>
+    O que é dito nas sessões é protegido pelo sigilo profissional, previsto no Código de Ética Profissional do
+    Psicólogo. Os registros do atendimento seguem as regras do Conselho Federal de Psicologia.
+  </p>
+
+  <h2>Por quanto tempo os dados ficam guardados</h2>
+  <!-- TODO(privacidade): confirmar o prazo de guarda das mensagens de contato. -->
+  <p>
+    As mensagens de contato são guardadas só pelo tempo necessário para responder e combinar o atendimento.
+    Se o atendimento não começar, elas são apagadas.
+  </p>
+
+  <h2>Seus direitos</h2>
+  <p>Você pode pedir, a qualquer momento:</p>
+  <ul>
+    <li>para saber quais dados seus estão guardados;</li>
+    <li>para corrigir dados errados;</li>
+    <li>para apagar seus dados;</li>
+    <li>para retirar o consentimento que você deu no formulário.</li>
+  </ul>
+
+  @if (updatedAt) {
+    <p class="muted">Última atualização: {{ updatedAt }}.</p>
+  }
+
+  <app-crisis-notice />
+
+  <p><a class="link" routerLink="/">Voltar para a página inicial</a></p>
+</article>
+}

@@ -1,0 +1,96 @@
+@use 'mixins' as *;
+
+:host {
+  display: block;
+}
+
+.footer {
+  background: var(--color-deep);
+  color: var(--color-on-deep);
+  padding-block: var(--space-8) var(--space-6);
+  border-top: 1px solid rgb(247 243 234 / 0.12);
+}
+
+.top {
+  display: grid;
+  gap: var(--space-7);
+
+  @include from($bp-md) {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+}
+
+.identity {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.logo {
+  width: auto;
+  height: 3rem;
+  margin-bottom: var(--space-2);
+  filter: brightness(0) invert(0.95) sepia(0.1);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
+}
+
+.tagline,
+.epsi {
+  color: var(--color-on-deep-muted);
+  font-size: var(--text-sm);
+}
+
+.epsi a {
+  display: inline-block;
+  margin-top: var(--space-1);
+  font-weight: 700;
+}
+
+.links-title {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.links ul {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+
+  &:hover {
+    text-decoration-color: var(--color-gold);
+  }
+}
+
+a:focus-visible {
+  @include focus-ring(var(--color-gold));
+}
+
+.divider {
+  margin: var(--space-7) 0 var(--space-6);
+  border: 0;
+  height: 1px;
+  background: rgb(247 243 234 / 0.2);
+}
+
+.legal {
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-on-deep-muted);
+}

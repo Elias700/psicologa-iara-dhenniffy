@@ -1,0 +1,41 @@
+<section id="inicio" class="hero" appSectionTheme="bg" aria-labelledby="hero-title">
+  <div class="container grid">
+    <div class="text">
+      <p class="eyebrow hero-enter" style="--i: 0">{{ content.eyebrow }}</p>
+      <h1 id="hero-title" class="title hero-enter" style="--i: 1">{{ content.h1 }}</h1>
+      <p class="display hero-enter" style="--i: 2">{{ content.display }}</p>
+      <p class="subtitle hero-enter" style="--i: 3">{{ content.subtitle }}</p>
+
+      <div class="ctas hero-enter" style="--i: 4">
+        @if (whatsapp) {
+          <a class="btn" [href]="whatsapp" target="_blank" rel="noopener">
+            <app-icon name="whatsapp" />
+            {{ content.primaryCta }}
+            <span class="visually-hidden">(abre o WhatsApp)</span>
+          </a>
+        } @else {
+          <a class="btn" href="#contato" appAnchor="contato">
+            <app-icon name="whatsapp" />
+            {{ content.primaryCta }}
+          </a>
+        }
+        <a class="btn btn--ghost" href="#como-funciona" appAnchor="como-funciona">
+          {{ content.secondaryCta }}
+          <app-icon name="arrow-down" />
+        </a>
+      </div>
+    </div>
+
+    <figure class="photo hero-enter" style="--i: 1">
+      <div class="frame hero-mask">
+        <!-- Só WebP aqui: com priority o Angular faz preload desta imagem; uma fonte AVIF baixaria duas vezes. -->
+        <img [ngSrc]="photo.base + '-' + photo.width" [ngSrcset]="ngSrcset" [sizes]="sizes" fill priority
+          [alt]="photo.alt" />
+      </div>
+      <figcaption class="caption">
+        <span class="caption-name">{{ pro.name }}</span>
+        <span>{{ pro.role }} · {{ pro.crp }}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>

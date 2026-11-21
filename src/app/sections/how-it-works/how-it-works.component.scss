@@ -1,0 +1,129 @@
+@use 'mixins' as *;
+
+.grid {
+  display: grid;
+  gap: var(--space-7);
+
+  @include from($bp-lg) {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(3rem, 6vw, 7rem);
+  }
+}
+
+.intro-sticky {
+  display: grid;
+  gap: var(--space-5);
+
+  // "Pin" calmo: o título acompanha a leitura dos passos (CSS sticky, sem pin-spacer)
+  @include from($bp-lg) {
+    position: sticky;
+    top: calc(var(--header-h) + 3rem);
+  }
+}
+
+.reassurance {
+  justify-self: start;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-sage);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.practical {
+  display: grid;
+  gap: var(--space-3);
+
+  div {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  dt {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-gold-ink);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.steps-wrap {
+  position: relative;
+  --num-size: 3.5rem;
+}
+
+.steps-line {
+  position: absolute;
+  top: calc(var(--num-size) / 2);
+  bottom: calc(var(--num-size) / 2);
+  left: calc(var(--num-size) / 2 - 1px);
+  width: 2px;
+  background: var(--color-line);
+}
+
+.steps-line-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold-ink);
+  transform: scaleY(1);
+  transform-origin: top center;
+}
+
+.steps {
+  display: grid;
+  gap: clamp(2.5rem, 1.5rem + 4vw, 6rem);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--num-size) 1fr;
+  gap: var(--space-5);
+  align-items: start;
+
+  h3 {
+    font-size: var(--text-2xl);
+    margin-top: 0.5rem;
+  }
+
+  p {
+    margin-top: var(--space-3);
+    font-size: var(--text-lg);
+  }
+}
+
+.number {
+  display: grid;
+  place-items: center;
+  width: var(--num-size);
+  height: var(--num-size);
+  border-radius: 50%;
+  border: 2px solid var(--color-gold-ink);
+  background: var(--color-bg);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-gold-ink);
+  font-variant-numeric: tabular-nums;
+
+  @include motion-ok {
+    transition:
+      background-color var(--dur-ui) var(--ease-standard),
+      color var(--dur-ui) var(--ease-standard);
+  }
+}
+
+// Com a linha de progresso ativa (desktop + movimento), o passo da vez fica destacado.
+// Os outros continuam legíveis (contraste total), só o número muda.
+.steps-wrap.is-progressive .step.is-active .number {
+  background: var(--color-gold-ink);
+  color: var(--color-bg);
+}

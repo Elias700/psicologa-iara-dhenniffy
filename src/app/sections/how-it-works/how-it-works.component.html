@@ -1,0 +1,36 @@
+<section id="como-funciona" class="section" appSectionTheme="bg" aria-labelledby="como-funciona-title">
+  <div class="container grid">
+    <div class="intro">
+      <div class="intro-sticky">
+        <p class="eyebrow" appReveal>{{ content.eyebrow }}</p>
+        <h2 id="como-funciona-title" appSplitText>{{ content.title }}</h2>
+        <p class="lead" appReveal>{{ content.intro }}</p>
+        <p class="reassurance" appReveal>{{ content.reassurance }}</p>
+
+        <dl class="practical" appReveal>
+          @for (item of practical; track item.label) {
+            <div>
+              <dt>{{ item.label }}</dt>
+              <dd>{{ item.value }}</dd>
+            </div>
+          }
+        </dl>
+      </div>
+    </div>
+
+    <div class="steps-wrap" appStepsProgress>
+      <div class="steps-line" aria-hidden="true"><span class="steps-line-fill"></span></div>
+      <ol class="steps" role="list">
+        @for (step of content.steps; track step.title; let i = $index) {
+          <li class="step" data-step appReveal>
+            <span class="number" aria-hidden="true">{{ (i + 1).toString().padStart(2, '0') }}</span>
+            <div class="step-body">
+              <h3><span class="visually-hidden">Passo {{ i + 1 }}: </span>{{ step.title }}</h3>
+              <p>{{ step.text }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+    </div>
+  </div>
+</section>

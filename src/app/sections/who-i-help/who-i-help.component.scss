@@ -1,0 +1,77 @@
+@use 'mixins' as *;
+
+.cards {
+  display: grid;
+  gap: var(--space-4);
+
+  @include from($bp-md) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+
+  @include from($bp-lg) {
+    grid-template-columns: repeat(6, 1fr);
+
+    // 3 em cima, 2 embaixo (o último ocupa mais espaço)
+    .card {
+      grid-column: span 2;
+    }
+    .card:nth-child(4) {
+      grid-column: span 3;
+    }
+    .card:nth-child(5) {
+      grid-column: span 3;
+    }
+  }
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  position: relative;
+
+  // Linha superior que aparece no hover (derivada do hover de card do clone)
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: var(--space-5);
+    right: var(--space-5);
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--color-gold-ink);
+    transform: scaleX(0.25);
+    transform-origin: left;
+
+    @include motion-ok {
+      transition: transform var(--dur-ui) var(--ease-out);
+    }
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  &--open {
+    background: var(--color-sage);
+
+    @include from($bp-md) {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.examples {
+  display: grid;
+  gap: var(--space-1);
+  padding-left: 1.25rem;
+}

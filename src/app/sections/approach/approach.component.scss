@@ -1,0 +1,25 @@
+@use 'mixins' as *;
+
+.pillars {
+  display: grid;
+  gap: var(--space-6) var(--space-7);
+
+  @include from($bp-md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.pillar {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--color-line-strong);
+
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  p {
+    font-size: var(--text-lg);
+  }
+}

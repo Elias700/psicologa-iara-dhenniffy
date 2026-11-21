@@ -1,0 +1,277 @@
+@use 'mixins' as *;
+
+:host {
+  --header-fg: var(--color-text);
+  --header-bg: rgb(247 243 234 / 0.94);
+  --header-border: var(--color-line);
+  --toggle-on: var(--color-primary);
+
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  display: block;
+}
+
+:host-context(:root[data-header-theme='dark']) {
+  --header-fg: var(--color-on-deep);
+  --header-bg: rgb(30 51 40 / 0.96);
+  --header-border: rgb(247 243 234 / 0.14);
+  --toggle-on: var(--color-gold);
+}
+
+.header {
+  position: relative;
+  color: var(--header-fg);
+
+  @include motion-ok {
+    transition: color 0.6s var(--ease-standard);
+  }
+
+  // Fundo e desfoque num pseudo-elemento: backdrop-filter no próprio .header criaria um
+  // "containing block" e quebraria o menu mobile (position: fixed).
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    backdrop-filter: saturate(1.2) blur(8px);
+
+    @include motion-ok {
+      transition: background-color 0.6s var(--ease-standard);
+    }
+  }
+
+  &.is-open {
+    --header-fg: var(--color-text);
+    --header-bg: var(--color-bg);
+    --header-border: var(--color-line);
+    --toggle-on: var(--color-primary);
+  }
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: var(--header-h);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 44px;
+  text-decoration: none;
+  color: inherit;
+  flex: none;
+}
+
+.brand-mark {
+  width: auto;
+  height: 2.5rem;
+
+  :host-context(:root[data-header-theme='dark']) .header:not(.is-open) & {
+    filter: brightness(0) invert(0.95) sepia(0.1);
+  }
+}
+
+.brand-text {
+  display: grid;
+  line-height: 1.15;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.brand-role {
+  font-size: 0.8125rem;
+  opacity: 0.9;
+}
+
+.nav-desktop {
+  display: none;
+
+  @media (min-width: 75rem) {
+    display: block;
+  }
+
+  ul {
+    display: flex;
+    gap: var(--space-1);
+  }
+}
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.625rem;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: var(--text-sm);
+
+  // Sublinhado que cresce (derivado do hover do clone, sem dividir letras)
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0.625rem;
+    right: 0.625rem;
+    bottom: 0.5rem;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+
+    @include motion-ok {
+      transition: transform var(--dur-ui) var(--ease-out);
+    }
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.toggle-bar {
+  display: none;
+
+  @include from($bp-md) {
+    display: block;
+  }
+}
+
+.cta-bar {
+  display: none;
+  min-height: 2.75rem;
+  padding-block: 0.5rem;
+
+  @include from($bp-lg) {
+    display: inline-flex;
+  }
+
+  :host-context(:root[data-header-theme='dark']) .header:not(.is-open) & {
+    --btn-bg: var(--color-on-deep);
+    --btn-fg: var(--color-deep);
+    --btn-border: var(--color-on-deep);
+  }
+}
+
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+  font-size: var(--text-sm);
+
+  @media (min-width: 75rem) {
+    display: none;
+  }
+}
+
+.menu-label {
+  @media (max-width: 22.49rem) {
+    @include visually-hidden;
+  }
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-gold-ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  visibility: hidden;
+  pointer-events: none;
+
+  :host-context(:root[data-header-theme='dark']) & {
+    background: var(--color-gold);
+  }
+}
+
+// ---------- Menu mobile ----------
+@keyframes menu-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.menu {
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  overflow-y: auto;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-top: 1px solid var(--color-line);
+
+  @include motion-ok {
+    animation: menu-in 250ms var(--ease-standard) both;
+  }
+}
+
+.menu-inner {
+  display: grid;
+  gap: var(--space-6);
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.menu-list {
+  display: grid;
+  gap: var(--space-1);
+
+  li {
+    @include motion-ok {
+      animation: menu-item-in 400ms var(--ease-out) both;
+      animation-delay: calc(var(--i, 0) * 50ms + 60ms);
+    }
+  }
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  min-height: 3.25rem;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.menu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+}

@@ -1,0 +1,59 @@
+<footer class="footer">
+  <div class="container">
+    <div class="top">
+      <div class="identity">
+        <img class="logo" src="images/simbolo-iara.webp" width="70" height="56" alt="" loading="lazy" />
+        <p class="name">{{ pro.name }}</p>
+        <p class="role"><strong>{{ pro.role }} — {{ pro.crp }}</strong></p>
+        <p class="tagline">{{ pro.tagline }}.</p>
+        @if (pro.ePsiActive) {
+          <p class="epsi">
+            Atendimento online cadastrado no e-Psi, conforme a Resolução CFP nº 11/2018.
+            <a [href]="pro.ePsiUrl" target="_blank" rel="noopener">Consultar cadastro no e-Psi<span class="visually-hidden"> (abre em outra aba)</span></a>
+          </p>
+        }
+      </div>
+
+      <nav class="links" aria-label="Links do rodapé">
+        <p class="links-title">Navegação</p>
+        <ul role="list">
+          @for (item of nav; track item.id) {
+            <li><a [href]="'/#' + item.id">{{ item.label }}</a></li>
+          }
+          <li><a routerLink="/privacidade">Política de privacidade</a></li>
+        </ul>
+      </nav>
+
+      @if (whatsapp || email || instagram) {
+        <div class="links">
+          <p class="links-title">Contato</p>
+          <ul role="list">
+            @if (whatsapp) {
+              <li>
+                <a [href]="whatsapp" target="_blank" rel="noopener">
+                  <app-icon name="whatsapp" /> WhatsApp<span class="visually-hidden"> (abre o WhatsApp)</span>
+                </a>
+              </li>
+            }
+            @if (email) {
+              <li><a [href]="'mailto:' + email"><app-icon name="mail" /> {{ email }}</a></li>
+            }
+            @if (instagram) {
+              <li>
+                <a [href]="instagram" target="_blank" rel="noopener">
+                  <app-icon name="instagram" /> &#64;{{ instagramHandle }}<span class="visually-hidden"> (abre o Instagram)</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <hr class="divider" appReveal="line" />
+
+    <app-crisis-notice tone="dark" />
+
+    <p class="legal">© {{ year }} {{ pro.name }} · {{ pro.role }} · {{ pro.crp }}. Atendimento exclusivamente online.</p>
+  </div>
+</footer>

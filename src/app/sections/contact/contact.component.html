@@ -1,0 +1,68 @@
+<section id="contato" class="section contact" appSectionTheme="deep" headerTheme="dark" data-bg-fixed
+  aria-labelledby="contato-title">
+  <div class="container grid">
+    <div class="intro">
+      <div class="heading">
+        <figure class="avatar" appImageMask>
+          <div class="mask-inner">
+            <picture>
+              <source type="image/avif" [attr.srcset]="avif" [attr.sizes]="sizes" />
+              <img [ngSrc]="photo.base + '-' + photo.width" [ngSrcset]="ngSrcset" [sizes]="sizes" fill [alt]="photo.alt" />
+            </picture>
+          </div>
+        </figure>
+        <div>
+          <p class="eyebrow" appReveal>{{ content.eyebrow }}</p>
+          <h2 id="contato-title" appSplitText>{{ content.title }}</h2>
+        </div>
+      </div>
+
+      <p class="lead" appReveal>{{ content.text }}</p>
+      <p class="reassurance" appReveal>{{ reassurance }}</p>
+
+      @if (whatsapp || email || instagram) {
+        <ul role="list" class="channels" appReveal [revealChildren]="true">
+          @if (whatsapp) {
+            <li>
+              <a class="btn btn--light" [href]="whatsapp" target="_blank" rel="noopener">
+                <app-icon name="whatsapp" /> Mandar mensagem no WhatsApp
+                <span class="visually-hidden">(abre o WhatsApp)</span>
+              </a>
+            </li>
+          }
+          @if (email) {
+            <li>
+              <a class="btn btn--outline-light" [href]="'mailto:' + email">
+                <app-icon name="mail" /> Escrever um e-mail
+                <span class="visually-hidden">para {{ email }} (abre seu programa de e-mail)</span>
+              </a>
+            </li>
+          }
+          @if (instagram) {
+            <li>
+              <a class="btn btn--outline-light" [href]="instagram" target="_blank" rel="noopener">
+                <app-icon name="instagram" /> &#64;{{ instagramHandle }}
+                <span class="visually-hidden">(abre o Instagram)</span>
+              </a>
+            </li>
+          }
+        </ul>
+      }
+
+      <p class="identity" appReveal>
+        <strong>{{ pro.name }}</strong> — {{ pro.role }} — {{ pro.crp }}
+        @if (pro.ePsiActive) {
+          <br />Cadastro ativo no
+          <a [href]="pro.ePsiUrl" target="_blank" rel="noopener">e-Psi<span class="visually-hidden"> (abre em outra aba)</span></a>
+          (Resolução CFP nº 11/2018).
+        }
+      </p>
+
+      <app-crisis-notice tone="dark" appReveal />
+    </div>
+
+    <div class="form-wrap" appReveal="scale">
+      <app-contact-form />
+    </div>
+  </div>
+</section>

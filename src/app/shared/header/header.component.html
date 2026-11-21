@@ -1,0 +1,52 @@
+<header class="header" [class.is-open]="menuOpen()" (keydown)="trapFocus($event)">
+  <div class="bar container">
+    <a class="brand" href="/#inicio" (click)="goTo($event, 'inicio')">
+      <img class="brand-mark" src="images/simbolo-iara.webp" width="70" height="56" alt="" />
+      <span class="brand-text">
+        <span class="brand-name">{{ pro.name }}</span>
+        <span class="brand-role">{{ pro.role }} · {{ pro.crp }}</span>
+      </span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Seções do site">
+      <ul role="list">
+        @for (item of nav; track item.id) {
+          <li>
+            <a class="nav-link" [href]="'/#' + item.id" (click)="goTo($event, item.id)">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <app-motion-toggle class="toggle-bar" />
+      <a class="btn cta-bar" href="/#contato" (click)="goTo($event, 'contato')">Agendar conversa</a>
+      <button #menuButton type="button" class="menu-btn" [attr.aria-expanded]="menuOpen()" aria-controls="menu-mobile"
+        (click)="toggleMenu()">
+        <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+        <span class="menu-label">{{ menuOpen() ? 'Fechar' : 'Menu' }}</span>
+        <span class="visually-hidden">{{ menuOpen() ? 'o menu' : 'de navegação' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="progress" appScrollProgress aria-hidden="true"></div>
+
+  <div #menuPanel id="menu-mobile" class="menu" [hidden]="!menuOpen()">
+    <div class="container menu-inner">
+      <nav aria-label="Seções do site (menu)">
+        <ul role="list" class="menu-list">
+          @for (item of nav; track item.id; let i = $index) {
+            <li [style.--i]="i">
+              <a class="menu-link" [href]="'/#' + item.id" (click)="goTo($event, item.id)">{{ item.label }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+      <div class="menu-actions">
+        <app-motion-toggle />
+        <a class="btn" href="/#contato" (click)="goTo($event, 'contato')">Agendar conversa</a>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,58 @@
+<section id="sobre" class="section about" appSectionTheme="surface" aria-labelledby="sobre-title">
+  <div class="container grid">
+    <figure class="photo" appImageMask>
+      <div class="mask-inner">
+        <picture>
+          <source type="image/avif" [attr.srcset]="avif" [attr.sizes]="sizes" />
+          <img class="parallax-img" appParallax="5" [ngSrc]="photo.base + '-' + photo.width" [ngSrcset]="ngSrcset"
+            [sizes]="sizes" fill [alt]="photo.alt" />
+        </picture>
+      </div>
+    </figure>
+
+    <div class="text">
+      <p class="eyebrow" appReveal>{{ content.eyebrow }}</p>
+      <h2 id="sobre-title" appSplitText>{{ content.title }}</h2>
+
+      <div class="paragraphs" appReveal [revealChildren]="true">
+        @for (paragraph of content.paragraphs; track $index) {
+          <p>{{ paragraph }}</p>
+        }
+      </div>
+
+      <div class="quote-block">
+        <p class="quote" appScrubWords>{{ content.quote }}</p>
+        <p class="quote-note" appReveal>{{ content.quoteNote }}</p>
+      </div>
+
+      @if (hasDetails) {
+        <dl class="details" appReveal>
+          @if (pro.approach) {
+            <div>
+              <dt>Abordagem</dt>
+              <dd>{{ pro.approach }}</dd>
+            </div>
+          }
+          @if (pro.education.length) {
+            <div>
+              <dt>Formação</dt>
+              @for (item of pro.education; track item) {
+                <dd>{{ item }}</dd>
+              }
+            </div>
+          }
+          @if (pro.ageRange) {
+            <div>
+              <dt>Quem eu atendo</dt>
+              <dd>{{ pro.ageRange }}</dd>
+            </div>
+          }
+        </dl>
+      }
+
+      <p class="crp" appReveal>
+        <strong>{{ pro.name }}</strong> · {{ pro.role }} · {{ pro.crp }}
+      </p>
+    </div>
+  </div>
+</section>

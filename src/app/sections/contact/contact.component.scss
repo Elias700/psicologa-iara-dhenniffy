@@ -1,0 +1,99 @@
+@use 'mixins' as *;
+
+.contact {
+  background: var(--color-deep);
+  color: var(--color-on-deep);
+
+  h2 {
+    color: var(--color-on-deep);
+  }
+
+  .eyebrow {
+    color: var(--color-gold);
+  }
+
+  a:not(.btn):focus-visible,
+  .btn:focus-visible {
+    @include focus-ring(var(--color-gold));
+  }
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: start;
+
+  @include from($bp-lg) {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-5);
+
+  > div {
+    min-width: 0;
+  }
+}
+
+.avatar {
+  position: relative;
+  flex: none;
+  width: 7rem;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-arch);
+  background: var(--color-primary);
+
+  @include from($bp-md) {
+    width: 10rem;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+}
+
+.mask-inner {
+  position: absolute;
+  inset: 0;
+}
+
+.lead {
+  color: var(--color-on-deep);
+}
+
+.reassurance {
+  justify-self: start;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background: rgb(217 178 106 / 0.16);
+  color: var(--color-on-deep);
+  font-weight: 700;
+}
+
+.channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.identity {
+  color: var(--color-on-deep-muted);
+  font-size: var(--text-sm);
+
+  a {
+    color: var(--color-on-deep);
+    font-weight: 700;
+  }
+}

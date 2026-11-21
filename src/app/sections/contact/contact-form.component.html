@@ -1,0 +1,128 @@
+<form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate aria-labelledby="form-title">
+  <h3 id="form-title" class="form-title">Prefere deixar seus dados?</h3>
+  <p class="form-intro">
+    Preencha e eu entro em contato pela forma que você escolher. Campos com <span aria-hidden="true">*</span>
+    <span class="visually-hidden">asterisco</span> são obrigatórios.
+  </p>
+
+  @if (submitted() && errorCount() > 0) {
+    <div #summary class="summary" tabindex="-1" role="alert">
+      <p><strong>{{ errorCount() === 1 ? 'Falta ajustar 1 campo.' : 'Faltam ajustar ' + errorCount() + ' campos.' }}</strong></p>
+      <p>As explicações estão logo abaixo de cada campo.</p>
+    </div>
+  }
+
+  <div class="field">
+    <label for="cf-name">Seu nome <span aria-hidden="true">*</span></label>
+    <input id="cf-name" type="text" formControlName="name" autocomplete="name" required
+      [attr.aria-invalid]="!!error('name')" [attr.aria-describedby]="error('name') ? 'cf-name-error' : null" />
+    @if (error('name'); as msg) {
+      <p id="cf-name-error" class="error">{{ msg }}</p>
+    }
+  </div>
+
+  <fieldset class="field">
+    <legend>Como prefere que eu entre em contato? <span aria-hidden="true">*</span></legend>
+    <div class="options">
+      <label class="option">
+        <input type="radio" formControlName="channel" value="whatsapp" />
+        <span>Mensagem no WhatsApp</span>
+      </label>
+      <label class="option">
+        <input type="radio" formControlName="channel" value="email" />
+        <span>E-mail</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="field">
+    <label for="cf-contact">{{ contactLabel() }} <span aria-hidden="true">*</span></label>
+    <input id="cf-contact" formControlName="contact" required
+      [attr.type]="channel() === 'email' ? 'email' : 'tel'"
+      [attr.autocomplete]="channel() === 'email' ? 'email' : 'tel'"
+      [attr.inputmode]="channel() === 'email' ? 'email' : 'tel'"
+      [attr.aria-invalid]="!!error('contact')" [attr.aria-describedby]="error('contact') ? 'cf-contact-error' : null" />
+    @if (error('contact'); as msg) {
+      <p id="cf-contact-error" class="error">{{ msg }}</p>
+    }
+  </div>
+
+  <div class="field">
+    <label for="cf-time">Melhor horário para eu responder</label>
+    <select id="cf-time" formControlName="bestTime">
+      <option value="qualquer">Qualquer horário</option>
+      <option value="manha">Manhã</option>
+      <option value="tarde">Tarde</option>
+      <option value="noite">Noite</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="cf-message">Quer contar algo antes? (opcional)</label>
+    <p id="cf-message-hint" class="hint">
+      Pode ser só o que você procura, em poucas palavras. Por segurança, não escreva detalhes de saúde aqui.
+      A gente conversa sobre isso com calma, em particular.
+    </p>
+    <textarea id="cf-message" formControlName="message" rows="4" maxlength="600"
+      [attr.aria-describedby]="'cf-message-hint cf-message-count' + (error('message') ? ' cf-message-error' : '')"></textarea>
+    <p id="cf-message-count" class="hint count">{{ messageLength().length }} de 600 caracteres</p>
+    @if (error('message'); as msg) {
+      <p id="cf-message-error" class="error">{{ msg }}</p>
+    }
+  </div>
+
+  <div class="field">
+    <label class="option consent">
+      <input type="checkbox" formControlName="consent" required [attr.aria-invalid]="!!error('consent')"
+        [attr.aria-describedby]="error('consent') ? 'cf-consent-error' : null" />
+      <span>
+        Concordo que a Iara use estes dados só para responder ao meu contato, como explica a
+        <a routerLink="/privacidade" class="link">Política de privacidade</a>. <span aria-hidden="true">*</span>
+      </span>
+    </label>
+    @if (error('consent'); as msg) {
+      <p id="cf-consent-error" class="error">{{ msg }}</p>
+    }
+  </div>
+
+  <button class="btn submit" type="submit" [disabled]="status() === 'sending'">
+    {{ status() === 'sending' ? 'Enviando…' : 'Enviar' }}
+  </button>
+
+  <div #statusBox class="status" tabindex="-1" aria-live="polite">
+    @switch (status()) {
+      @case ('sent') {
+        <p class="ok"><strong>Recebi seus dados.</strong> Vou entrar em contato pela forma que você escolheu.</p>
+      }
+      @case ('error') {
+        <p class="error">
+          <strong>Não consegui enviar agora.</strong> Seus dados continuam aqui. Tente de novo em alguns minutos
+          @if (fallbackWhatsapp || fallbackEmail) {
+            ou fale comigo direto
+            @if (fallbackWhatsapp) {
+              pelo <a [href]="fallbackWhatsapp" target="_blank" rel="noopener" class="link">WhatsApp<span class="visually-hidden"> (abre o WhatsApp)</span></a>
+            }
+            @if (fallbackEmail) {
+              pelo e-mail <a [href]="'mailto:' + fallbackEmail" class="link">{{ fallbackEmail }}</a>
+            }
+          }.
+        </p>
+      }
+      @case ('not-configured') {
+        <p class="error">
+          <strong>O formulário ainda não está funcionando.</strong>
+          @if (fallbackWhatsapp || fallbackEmail) {
+            Por enquanto, fale comigo pelo
+            @if (fallbackWhatsapp) {
+              <a [href]="fallbackWhatsapp" target="_blank" rel="noopener" class="link">WhatsApp<span class="visually-hidden"> (abre o WhatsApp)</span></a>
+            }
+            @if (fallbackWhatsapp && fallbackEmail) { ou pelo }
+            @if (fallbackEmail) {
+              e-mail <a [href]="'mailto:' + fallbackEmail" class="link">{{ fallbackEmail }}</a>
+            }.
+          }
+        </p>
+      }
+    }
+  </div>
+</form>
