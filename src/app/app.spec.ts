@@ -8,7 +8,7 @@ import { ScrollAnimationService } from './core/animations/scroll-animation.servi
 /** Stub: nos testes não carregamos GSAP/Lenis (import dinâmico só no navegador real). */
 class ScrollAnimationStub {
   readonly libs = signal(null);
-  init = () => Promise.resolve();
+  initOnIntent = () => undefined;
   enqueue = (task: () => void) => task();
   scheduleRefresh = () => undefined;
   scrollToSection = () => undefined;
@@ -36,11 +36,10 @@ describe('App', () => {
     expect(compiled.querySelector('.skip-link')?.textContent).toContain('Pular para o conteúdo');
   });
 
-  it('should render the motion toggle in the header', async () => {
+  it('should render the section navigation in the header', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    const button = (fixture.nativeElement as HTMLElement).querySelector('app-motion-toggle button');
-    expect(button?.textContent).toContain('Reduzir movimento');
-    expect(button?.getAttribute('aria-pressed')).not.toBeNull();
+    const links = (fixture.nativeElement as HTMLElement).querySelectorAll('.nav .nav-link');
+    expect(links.length).toBeGreaterThan(0);
   });
 });

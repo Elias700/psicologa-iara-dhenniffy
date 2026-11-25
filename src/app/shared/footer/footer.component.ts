@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { RevealDirective } from '../../core/animations/reveal.directive';
+import { HeaderThemeDirective } from '../../core/animations/header-theme';
 import { CONTACT, NAV, PROFESSIONAL, instagramLink, whatsappLink } from '../../core/data/site-content';
 import { CrisisNoticeComponent } from '../crisis-notice/crisis-notice.component';
-import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink, CrisisNoticeComponent, IconComponent, RevealDirective],
+  imports: [RouterLink, CrisisNoticeComponent, HeaderThemeDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',

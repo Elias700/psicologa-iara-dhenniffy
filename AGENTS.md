@@ -10,7 +10,7 @@ Landing page da psicóloga **Iara Dhenniffy**, que atende **exclusivamente onlin
 | --- | --- |
 | Nome de exibição | Iara Dhenniffy — Psicóloga |
 | Registro | CRP 15/5286 |
-| Cadastro e-Psi (atendimento online) | TODO: confirmar que o cadastro no e-Psi do CFP está ativo |
+| Cadastro e-Psi (atendimento online) | TODO: confirmar com o CRP-15 se o cadastro ainda é exigido depois da Res. CFP 9/2024 e, se for, se está ativo |
 | Apresentação (bio) | "Psicóloga autista · TDAH · TOC · Bipolaridade" / "Atendo neurodivergentes e outras mentes fora do padrão" |
 | Serviço | Psicoterapia (terapia) individual online |
 | Público | Pessoas neurodivergentes (autismo, TDAH, TOC, transtorno bipolar) e "outras mentes fora do padrão" |
@@ -50,7 +50,7 @@ src/
 │   │   ├── seo/               # SeoService, JSON-LD
 │   │   └── data/              # conteúdo do site tipado (site-content.ts)
 │   ├── sections/              # hero, about, who-i-help, how-it-works, online-therapy, approach, faq, contact
-│   ├── shared/                # header, footer, motion-toggle, botões, whatsapp-fab, crisis-notice, ícones
+│   ├── shared/                # header, footer, botões, whatsapp-fab, crisis-notice, ícones
 │   ├── app.component.ts
 │   ├── app.config.ts
 │   └── app.routes.ts
@@ -80,14 +80,14 @@ docs/
 
 - Centralize tudo em `src/app/core/animations/`:
   - `scroll-animation.service.ts`: inicializa a biblioteca (ex.: GSAP + ScrollTrigger, Lenis), registra plugins, faz o refresh e expõe utilitários;
-  - `motion-preference.service.ts`: um signal `motionEnabled` que considera (1) a escolha salva do visitante e (2) `prefers-reduced-motion`. Todas as diretivas leem esse signal e reagem a mudanças em tempo real (desligar → `ctx.revert()` e o conteúdo fica estático e visível; religar → recria as animações);
+  - `motion-preference.service.ts`: um signal `motionEnabled` que segue o `prefers-reduced-motion` do sistema. Todas as diretivas leem esse signal e reagem a mudanças em tempo real (desligar → `ctx.revert()` e o conteúdo fica estático e visível; religar → recria as animações);
   - **diretivas reutilizáveis** aplicadas no template, por exemplo `appReveal`, `appParallax`, `appSplitText`, `appPinSection`, `appImageMask`, `appHorizontalScroll`, `appBgShift`, `appDrawSvg`. Cada padrão encontrado no clone vira uma diretiva configurável por `input()`.
 - Se o clone usar GSAP/ScrollTrigger/Lenis/Locomotive, use a **mesma** lib via npm (versão atual, licença compatível). Se usar animação própria com IntersectionObserver ou CSS, reimplemente da mesma forma, sem lib extra.
 
 ### Controle de movimento (obrigatório)
 
-- Um botão **"Reduzir movimento"** (`shared/motion-toggle`) sempre acessível no header (e no menu mobile), com ícone + texto, `aria-pressed` e foco visível.
-- A escolha é salva em `localStorage` (envolto em try/catch, só no browser) e aplicada **antes** da primeira animação, para evitar "flash" de movimento.
+- O site segue automaticamente o `prefers-reduced-motion` do sistema, em tempo real. **Não há botão "Reduzir movimento"** (removido a pedido): não recrie.
+- A preferência é aplicada **antes** da primeira animação (script inline do `index.html`), para evitar "flash" de movimento. Nada é salvo no navegador.
 - Com movimento reduzido: sem parallax, pin, scrub, scroll horizontal, marquee, zoom, desenho de SVG e smooth scroll (rolagem nativa). Permitido apenas um fade curto (≤ 200ms) ou nada.
 
 ### Diretrizes sensoriais
@@ -120,12 +120,12 @@ docs/
 
 ## 6. Conteúdo e ética do CFP (obrigatório)
 
-A divulgação segue o **Código de Ética Profissional do Psicólogo (Res. CFP 010/2005)**, a **Res. CFP 11/2018** (serviços psicológicos online) e o Código de Defesa do Consumidor.
+A divulgação segue o **Código de Ética Profissional do Psicólogo (Res. CFP 010/2005)**, a **Res. CFP 9/2024** (serviços psicológicos mediados por tecnologia; revogou a 11/2018) e o Código de Defesa do Consumidor.
 
 ### Identificação obrigatória (rodapé e seção de contato)
 
 - **Iara Dhenniffy — Psicóloga — CRP 15/5286**
-- Menção ao cadastro no **e-Psi** (atendimento online regulamentado pela Res. CFP 11/2018), com link para https://e-psi.cfp.org.br/ (consulta pública de cadastro), **depois de o usuário confirmar que o cadastro está ativo.**
+- Menção ao cadastro no **e-Psi**, com link para https://e-psi.cfp.org.br/ (consulta pública de cadastro), **só depois de o usuário confirmar com o CRP-15 que o cadastro ainda é exigido (Res. CFP 9/2024) e está ativo.** Até lá, o site não menciona o e-Psi.
 
 ### Proibido
 
@@ -174,7 +174,7 @@ Nunca invente WhatsApp, e-mail, Instagram (pergunte o @), formação, pós-gradu
 ## 8. Acessibilidade (nível reforçado, porque é o público do site)
 
 - **WCAG 2.2 AA no mínimo**, buscando AAA em contraste de texto (≥ 7:1 no corpo do texto quando possível), foco bem visível, navegação completa por teclado, link "Pular para o conteúdo".
-- Botão "Reduzir movimento" (seção 4).
+- Respeito automático ao `prefers-reduced-motion` (seção 4).
 - **Linguagem simples:** parágrafos curtos, listas quando ajudarem, um assunto por bloco, termos técnicos explicados na hora.
 - **Previsibilidade:** links que abrem fora do site (WhatsApp, Instagram) avisam isso no texto ou no `aria-label` ("abre o WhatsApp"). Nada de pop-up, modal automático, chat que abre sozinho ou som.
 - Menu mobile acessível (`aria-expanded`, `aria-controls`, trap de foco, fechar com Esc).
@@ -198,7 +198,7 @@ Uma tarefa só está pronta quando:
 - [ ] `npm run build` termina sem erros nem warnings novos;
 - [ ] o HTML pré-renderizado (`dist/.../index.html`) contém todo o texto, as metatags e o JSON-LD;
 - [ ] não há acesso a `window`/`document`/`localStorage` no servidor;
-- [ ] as animações funcionam, são destruídas corretamente, respeitam `prefers-reduced-motion` e o botão "Reduzir movimento";
+- [ ] as animações funcionam, são destruídas corretamente e respeitam `prefers-reduced-motion`;
 - [ ] nenhuma animação viola as diretrizes sensoriais da seção 4;
 - [ ] o layout foi verificado em todas as larguras da seção 5;
 - [ ] nada de `src/clone` foi parar no bundle;

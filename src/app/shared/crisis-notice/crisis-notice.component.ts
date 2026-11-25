@@ -19,9 +19,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     .notice {
       max-width: 48rem;
       padding: 1rem 1.25rem;
-      border-left: 4px solid var(--color-accent);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      background: rgb(154 74 51 / 0.07);
+      border: 1px solid var(--clay);
+      border-radius: var(--radius-sm);
       font-size: var(--text-sm);
       line-height: 1.6;
     }
@@ -31,9 +30,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       white-space: nowrap;
     }
     :host(.dark) .notice {
-      border-left-color: var(--color-gold);
-      background: rgb(247 243 234 / 0.08);
-      color: var(--color-on-deep);
+      border-color: var(--gold);
+      color: var(--on-dark);
     }
   `,
 })

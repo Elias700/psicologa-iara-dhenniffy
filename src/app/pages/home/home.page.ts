@@ -8,33 +8,43 @@ import { ContactComponent } from '../../sections/contact/contact.component';
 import { FaqComponent } from '../../sections/faq/faq.component';
 import { HeroComponent } from '../../sections/hero/hero.component';
 import { HowItWorksComponent } from '../../sections/how-it-works/how-it-works.component';
+import { ManifestoComponent } from '../../sections/manifesto/manifesto.component';
+import { QuoteComponent } from '../../sections/quote/quote.component';
 import { WhoIHelpComponent } from '../../sections/who-i-help/who-i-help.component';
 
 /**
- * Ordem das seções: segue o caminho de quem chega pelo Instagram —
- * quem é (hero, sobre) → é para mim? (para quem, como é) → como começo? (como funciona, dúvidas) → contato.
+ * O HTML de todas as seções vem completo do prerender. As que ficam abaixo do hero só hidratam
+ * quando chegam perto da tela. Em navegação no cliente (sem SSR), renderizam na hora.
  */
 @Component({
   selector: 'app-home-page',
   imports: [
     HeroComponent,
+    ManifestoComponent,
     AboutComponent,
     WhoIHelpComponent,
+    QuoteComponent,
     ApproachComponent,
     HowItWorksComponent,
     FaqComponent,
     ContactComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // O HTML de todas as seções vem completo do prerender. As de baixo só hidratam (ganham JS e
-  // animações) quando chegam perto da tela. Em navegação no cliente (sem SSR), renderizam na hora.
   template: `
-    <app-hero />
+    <div id="inicio" class="opening">
+      <app-hero />
+      @defer (hydrate on viewport; on immediate) {
+        <app-manifesto />
+      }
+    </div>
     @defer (hydrate on viewport; on immediate) {
       <app-about />
     }
     @defer (hydrate on viewport; on immediate) {
       <app-who-i-help />
+    }
+    @defer (hydrate on viewport; on immediate) {
+      <app-quote />
     }
     @defer (hydrate on viewport; on immediate) {
       <app-approach />
@@ -47,6 +57,12 @@ import { WhoIHelpComponent } from '../../sections/who-i-help/who-i-help.componen
     }
     @defer (hydrate on viewport; on immediate) {
       <app-contact />
+    }
+  `,
+  // .opening limita o hero fixo: ele solta quando a cúpula termina de passar.
+  styles: `
+    .opening {
+      background: var(--forest);
     }
   `,
 })

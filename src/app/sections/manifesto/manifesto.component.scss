@@ -1,0 +1,99 @@
+@use 'mixins' as *;
+
+:host {
+  position: relative;
+  z-index: 1;
+  display: block;
+  // Encobre a base reta da foto no celular; no desktop a cúpula sobe sobre o hero fixo.
+  margin-top: -50vw;
+
+  @include from($bp-lg) {
+    margin-top: 0;
+  }
+}
+
+.manifesto {
+  position: relative;
+  isolation: isolate;
+  padding-top: 40vw;
+
+  @include from($bp-lg) {
+    padding-top: 23vw;
+  }
+
+  // Semicírculo + corpo. Separados do conteúdo para o texto poder entrar na cúpula.
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 auto;
+    height: 50vw;
+    border-radius: 50vw 50vw 0 0;
+    background: var(--forest);
+  }
+
+  &::after {
+    inset: calc(50vw - 1px) 0 0;
+    height: auto;
+    border-radius: 0;
+  }
+}
+
+// Onde o selo passa a ficar sobre o verde (a cúpula só alcança a margem esquerda nessa altura).
+.zone {
+  position: absolute;
+  inset: 34vw 0 0;
+  pointer-events: none;
+}
+
+.arc {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  overflow: visible;
+
+  text {
+    font-family: var(--font-display);
+    font-size: 76px;
+    letter-spacing: -0.01em;
+    fill: var(--on-dark);
+
+    @include from($bp-lg) {
+      font-size: 62px;
+    }
+  }
+}
+
+.body {
+  display: grid;
+  justify-items: center;
+  padding-bottom: var(--space-section);
+}
+
+.stem {
+  width: 1px;
+  height: clamp(3.5rem, 8vw, 8rem);
+  background: var(--gold);
+}
+
+.text {
+  max-width: 24ch;
+  margin-top: clamp(1.5rem, 2.5vw, 2.5rem);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  text-align: center;
+
+  @include from($bp-lg) {
+    max-width: 27ch;
+  }
+}
+
+.sprig {
+  width: clamp(5rem, 8vw, 8rem);
+  margin-top: clamp(2.5rem, 4vw, 4rem);
+  color: #35563f;
+  --sprig-vein: rgb(217 178 106 / 0.55);
+}

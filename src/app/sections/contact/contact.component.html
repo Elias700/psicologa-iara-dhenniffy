@@ -1,27 +1,13 @@
-<section id="contato" class="section contact" appSectionTheme="deep" headerTheme="dark" data-bg-fixed
-  aria-labelledby="contato-title">
+<section id="contato" class="section contact on-dark" appHeaderTheme="dark" aria-labelledby="contato-title">
   <div class="container grid">
     <div class="intro">
-      <div class="heading">
-        <figure class="avatar" appImageMask>
-          <div class="mask-inner">
-            <picture>
-              <source type="image/avif" [attr.srcset]="avif" [attr.sizes]="sizes" />
-              <img [ngSrc]="photo.base + '-' + photo.width" [ngSrcset]="ngSrcset" [sizes]="sizes" fill [alt]="photo.alt" />
-            </picture>
-          </div>
-        </figure>
-        <div>
-          <p class="eyebrow" appReveal>{{ content.eyebrow }}</p>
-          <h2 id="contato-title" appSplitText>{{ content.title }}</h2>
-        </div>
-      </div>
-
+      <h2 id="contato-title" appSplitText>
+        {{ content.title.start }} <em>{{ content.title.em }}</em>
+      </h2>
       <p class="lead" appReveal>{{ content.text }}</p>
-      <p class="reassurance" appReveal>{{ reassurance }}</p>
 
       @if (whatsapp || email || instagram) {
-        <ul role="list" class="channels" appReveal [revealChildren]="true">
+        <ul role="list" class="channels" appReveal>
           @if (whatsapp) {
             <li>
               <a class="btn btn--light" [href]="whatsapp" target="_blank" rel="noopener">
@@ -49,19 +35,21 @@
         </ul>
       }
 
-      <p class="identity" appReveal>
-        <strong>{{ pro.name }}</strong> — {{ pro.role }} — {{ pro.crp }}
-        @if (pro.ePsiActive) {
-          <br />Cadastro ativo no
-          <a [href]="pro.ePsiUrl" target="_blank" rel="noopener">e-Psi<span class="visually-hidden"> (abre em outra aba)</span></a>
-          (Resolução CFP nº 11/2018).
-        }
-      </p>
-
-      <app-crisis-notice tone="dark" appReveal />
+      <div class="notes">
+        <p>
+          <strong>{{ pro.name }}</strong>, {{ pro.role }}, {{ pro.crp }}
+          @if (pro.ePsiActive) {
+            <br />
+            <a [href]="pro.ePsiUrl" target="_blank" rel="noopener">
+              Consultar cadastro no e-Psi<span class="visually-hidden"> (abre em outra aba)</span>
+            </a>
+          }
+        </p>
+        <app-crisis-notice tone="dark" />
+      </div>
     </div>
 
-    <div class="form-wrap" appReveal="scale">
+    <div class="form-wrap" appReveal>
       <app-contact-form />
     </div>
   </div>

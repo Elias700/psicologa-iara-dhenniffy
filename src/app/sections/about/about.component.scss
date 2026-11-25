@@ -1,97 +1,131 @@
 @use 'mixins' as *;
 
+.section {
+  background: var(--cream);
+}
+
+// Título e retrato dividem a mesma linha: o arco fica entre as duas metades da frase.
+.stage {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-6);
+  padding-inline: var(--gutter);
+
+  @include from($bp-lg) {
+    grid-template-areas: 'scene';
+    align-items: center;
+    gap: 0;
+
+    > * {
+      grid-area: scene;
+    }
+  }
+}
+
+.title {
+  color: var(--forest);
+  text-align: center;
+
+  em {
+    color: var(--clay);
+  }
+
+  @include from($bp-lg) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: calc(min(29vw, 33rem) + 3.5vw);
+    width: 100%;
+    font-size: min(7.7vw, 10rem);
+    white-space: nowrap;
+    text-align: left;
+
+    span {
+      text-align: right;
+    }
+  }
+}
+
+.arch {
+  position: relative;
+  width: min(100%, 26rem);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--arch);
+  background: var(--sand);
+
+  img {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 124%;
+    height: auto;
+    max-width: none;
+    translate: -50% 0;
+    transform-origin: 50% 100%;
+  }
+
+  @include from($bp-lg) {
+    width: min(29vw, 33rem);
+    aspect-ratio: 3 / 4;
+
+    img {
+      width: 128%;
+    }
+  }
+}
+
 .grid {
   display: grid;
   gap: var(--space-7);
-  align-items: start;
+  margin-top: clamp(3rem, 7vw, 7.5rem);
 
-  @include from($bp-md) {
-    grid-template-columns: 0.85fr 1.15fr;
-    gap: clamp(2rem, 5vw, 6rem);
+  @include from($bp-lg) {
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(3rem, 7vw, 8rem);
   }
 }
 
-.photo {
-  position: relative;
-  width: min(100%, 26rem);
-  justify-self: center;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: var(--color-sage);
+.facts {
+  display: grid;
+  align-content: start;
 
-  @include from($bp-md) {
-    position: sticky;
-    top: calc(var(--header-h) + 2rem);
-    width: 100%;
+  > div {
+    padding-block: 1.125rem;
+    border-top: 1px solid var(--line);
   }
-}
 
-.mask-inner {
-  position: absolute;
-  inset: 0;
-}
+  dt {
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
+  }
 
-// Folga para o parallax (±5%) sem mostrar borda.
-.parallax-img {
-  height: 112% !important;
-  top: -6% !important;
-  object-fit: cover;
-  object-position: 50% 25%;
+  dd {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
 }
 
 .text {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
 
-.paragraphs {
-  display: grid;
-  gap: var(--space-4);
-  font-size: var(--text-lg);
-}
-
-.quote-block {
-  display: grid;
-  gap: var(--space-3);
-  margin-block: var(--space-4);
-  padding: var(--space-6);
-  border-radius: var(--radius-md);
-  background: var(--color-bg);
-  border-left: 4px solid var(--color-gold-ink);
-}
-
-.quote {
+.first {
+  max-width: 24ch;
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 500;
-  line-height: 1.2;
-  color: var(--color-primary);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--forest);
 }
 
-.quote-note {
-  color: var(--color-text-muted);
-}
-
-.details {
+.rest {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
 
-  dt {
-    font-size: var(--text-sm);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-gold-ink);
+  @include from($bp-lg) {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
   }
-
-  dd {
-    margin: 0;
-  }
-}
-
-.crp {
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-line);
-  color: var(--color-text-muted);
 }

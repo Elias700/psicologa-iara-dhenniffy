@@ -1,129 +1,157 @@
 @use 'mixins' as *;
 
-.grid {
+.section {
+  overflow: clip;
+  background: var(--sand);
+}
+
+.sprig {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+  width: clamp(11rem, 24vw, 28rem);
+  color: #cfb880;
+  --sprig-vein: rgb(251 248 240 / 0.4);
+  rotate: -152deg;
+}
+
+.head {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+
+  h2 {
+    color: var(--forest);
+  }
+
+  em {
+    display: block;
+    color: var(--clay);
+  }
+}
+
+.route {
+  position: relative;
+  margin-top: clamp(3rem, 5vw, 5rem);
+}
+
+// ---------- Linha sinuosa (desktop) ----------
+.wave {
+  display: none;
+
+  @include from($bp-lg) {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+
+  path {
+    fill: none;
+    stroke: var(--forest);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  .ghost {
+    stroke: rgb(29 54 40 / 0.22);
+    stroke-width: 1.5;
+  }
+
+  circle {
+    fill: var(--clay);
+    stroke: var(--sand);
+    stroke-width: 6;
+  }
+}
+
+// ---------- Passos ----------
+.steps {
+  position: relative;
   display: grid;
   gap: var(--space-7);
 
   @include from($bp-lg) {
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: clamp(3rem, 6vw, 7rem);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: var(--space-5);
   }
-}
 
-.intro-sticky {
-  display: grid;
-  gap: var(--space-5);
+  // Linha vertical no celular
+  &::before {
+    content: '';
+    position: absolute;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 1px;
+    background: var(--forest);
 
-  // "Pin" calmo: o título acompanha a leitura dos passos (CSS sticky, sem pin-spacer)
-  @include from($bp-lg) {
-    position: sticky;
-    top: calc(var(--header-h) + 3rem);
+    @include from($bp-lg) {
+      display: none;
+    }
   }
-}
 
-.reassurance {
-  justify-self: start;
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-md);
-  background: var(--color-sage);
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.practical {
-  display: grid;
-  gap: var(--space-3);
-
-  div {
+  li {
     display: grid;
-    gap: 0.125rem;
+    grid-template-columns: 3rem 1fr;
+    gap: 1.25rem;
+
+    @include from($bp-lg) {
+      display: block;
+      // O texto começa embaixo do ponto da linha
+      padding-right: 2.5rem;
+    }
   }
-
-  dt {
-    font-size: var(--text-sm);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-gold-ink);
-  }
-
-  dd {
-    margin: 0;
-  }
-}
-
-.steps-wrap {
-  position: relative;
-  --num-size: 3.5rem;
-}
-
-.steps-line {
-  position: absolute;
-  top: calc(var(--num-size) / 2);
-  bottom: calc(var(--num-size) / 2);
-  left: calc(var(--num-size) / 2 - 1px);
-  width: 2px;
-  background: var(--color-line);
-}
-
-.steps-line-fill {
-  position: absolute;
-  inset: 0;
-  background: var(--color-gold-ink);
-  transform: scaleY(1);
-  transform-origin: top center;
-}
-
-.steps {
-  display: grid;
-  gap: clamp(2.5rem, 1.5rem + 4vw, 6rem);
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.step {
-  position: relative;
-  display: grid;
-  grid-template-columns: var(--num-size) 1fr;
-  gap: var(--space-5);
-  align-items: start;
 
   h3 {
-    font-size: var(--text-2xl);
-    margin-top: 0.5rem;
+    font-size: clamp(1.75rem, 1.4rem + 1vw, 2.375rem);
+    padding-top: 0.5rem;
   }
 
   p {
     margin-top: var(--space-3);
-    font-size: var(--text-lg);
   }
 }
 
 .number {
+  position: relative;
   display: grid;
   place-items: center;
-  width: var(--num-size);
-  height: var(--num-size);
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
-  border: 2px solid var(--color-gold-ink);
-  background: var(--color-bg);
+  background: var(--forest);
+  color: var(--on-dark);
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-gold-ink);
-  font-variant-numeric: tabular-nums;
+  font-size: 1.5rem;
 
-  @include motion-ok {
-    transition:
-      background-color var(--dur-ui) var(--ease-standard),
-      color var(--dur-ui) var(--ease-standard);
+  @include from($bp-lg) {
+    display: block;
+    width: auto;
+    height: auto;
+    background: none;
+    color: var(--clay);
+    font-size: 4.5rem;
+    font-style: italic;
+    line-height: 1;
   }
 }
 
-// Com a linha de progresso ativa (desktop + movimento), o passo da vez fica destacado.
-// Os outros continuam legíveis (contraste total), só o número muda.
-.steps-wrap.is-progressive .step.is-active .number {
-  background: var(--color-gold-ink);
-  color: var(--color-bg);
+.practical {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line-strong);
+
+  dt {
+    font-size: var(--text-sm);
+  }
+
+  dd {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
 }

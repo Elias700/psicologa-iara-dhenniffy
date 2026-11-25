@@ -1,7 +1,6 @@
 <!-- Texto estático: não precisa de JS (hydrate never). Os links funcionam como links comuns. -->
 @defer (hydrate never; on immediate) {
 <article class="privacy container" aria-labelledby="privacy-title">
-  <p class="eyebrow">Transparência</p>
   <h1 id="privacy-title">Política de privacidade</h1>
   <p class="lead">
     Esta página explica, em linguagem simples, quais dados este site recebe, para que eles servem e quais são os
@@ -28,8 +27,8 @@
     </li>
   </ul>
   <p>
-    Este site <strong>não usa cookies de rastreamento nem ferramentas de publicidade</strong>. A única informação
-    guardada no seu navegador é a sua escolha no botão "Reduzir movimento", para lembrar dela na próxima visita.
+    Este site <strong>não usa cookies de rastreamento nem ferramentas de publicidade</strong> e não guarda
+    informações no seu navegador.
   </p>
 
   <h2>Para que os dados são usados</h2>
@@ -67,7 +66,7 @@
   </ul>
 
   @if (updatedAt) {
-    <p class="muted">Última atualização: {{ updatedAt }}.</p>
+    <p class="updated">Última atualização: {{ updatedAt }}.</p>
   }
 
   <app-crisis-notice />

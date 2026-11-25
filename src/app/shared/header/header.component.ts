@@ -13,11 +13,11 @@ import { ScrollAnimationService } from '../../core/animations/scroll-animation.s
 import { ScrollProgressDirective } from '../../core/animations/scroll-progress.directive';
 import { NAV, PROFESSIONAL } from '../../core/data/site-content';
 import { IconComponent } from '../icon/icon.component';
-import { MotionToggleComponent } from '../motion-toggle/motion-toggle.component';
+import { SealComponent } from '../seal/seal.component';
 
 @Component({
   selector: 'app-header',
-  imports: [IconComponent, MotionToggleComponent, ScrollProgressDirective],
+  imports: [IconComponent, ScrollProgressDirective, SealComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

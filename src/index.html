@@ -5,23 +5,20 @@
   <title>Iara Dhenniffy | Psicóloga Online para Neurodivergentes</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f3ea">
+  <meta name="theme-color" content="#cdd2b8">
   <meta name="format-detection" content="telephone=no">
   <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/atkinson-hyperlegible-next-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <script>
     // Aplica a preferência de movimento ANTES da primeira pintura (evita "flash" de movimento).
     (function () {
       var d = document.documentElement;
-      var choice = null;
-      try { choice = localStorage.getItem('iara-motion'); } catch (e) {}
-      var systemReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var full = choice ? choice === 'full' : !systemReduced;
-      d.setAttribute('data-motion', full ? 'full' : 'reduced');
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      d.setAttribute('data-motion', reduced ? 'reduced' : 'full');
       d.classList.add('js-anim');
       // Garantia: se as animações não iniciarem em 4s, o conteúdo aparece mesmo assim.
       setTimeout(function () { if (!d.classList.contains('motion-ready')) d.classList.add('anim-failsafe'); }, 4000);

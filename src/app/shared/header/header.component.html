@@ -1,14 +1,17 @@
 <header class="header" [class.is-open]="menuOpen()" (keydown)="trapFocus($event)">
-  <div class="bar container">
-    <a class="brand" href="/#inicio" (click)="goTo($event, 'inicio')">
-      <img class="brand-mark" src="images/simbolo-iara.webp" width="70" height="56" alt="" />
-      <span class="brand-text">
+  <a class="brand" href="/#inicio" (click)="goTo($event, 'inicio')">
+    <app-seal class="seal" />
+    <span class="brand-text">
+      <img src="images/simbolo-iara.webp" width="139" height="112" alt="" />
+      <span>
         <span class="brand-name">{{ pro.name }}</span>
-        <span class="brand-role">{{ pro.role }} · {{ pro.crp }}</span>
+        <span class="brand-role"><span>{{ pro.role }} · </span>{{ pro.crp }}</span>
       </span>
-    </a>
+    </span>
+  </a>
 
-    <nav class="nav-desktop" aria-label="Seções do site">
+  <div class="pill">
+    <nav class="nav" aria-label="Seções do site">
       <ul role="list">
         @for (item of nav; track item.id) {
           <li>
@@ -17,36 +20,37 @@
         }
       </ul>
     </nav>
-
-    <div class="actions">
-      <app-motion-toggle class="toggle-bar" />
-      <a class="btn cta-bar" href="/#contato" (click)="goTo($event, 'contato')">Agendar conversa</a>
-      <button #menuButton type="button" class="menu-btn" [attr.aria-expanded]="menuOpen()" aria-controls="menu-mobile"
-        (click)="toggleMenu()">
-        <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
-        <span class="menu-label">{{ menuOpen() ? 'Fechar' : 'Menu' }}</span>
-        <span class="visually-hidden">{{ menuOpen() ? 'o menu' : 'de navegação' }}</span>
-      </button>
-    </div>
+    <a class="btn cta" href="/#contato" (click)="goTo($event, 'contato')">Agendar conversa</a>
+    <button
+      #menuButton
+      type="button"
+      class="menu-btn"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="menu-mobile"
+      (click)="toggleMenu()"
+    >
+      <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+      {{ menuOpen() ? 'Fechar' : 'Menu' }}
+    </button>
   </div>
 
-  <div class="progress" appScrollProgress aria-hidden="true"></div>
-
-  <div #menuPanel id="menu-mobile" class="menu" [hidden]="!menuOpen()">
-    <div class="container menu-inner">
-      <nav aria-label="Seções do site (menu)">
-        <ul role="list" class="menu-list">
-          @for (item of nav; track item.id; let i = $index) {
-            <li [style.--i]="i">
-              <a class="menu-link" [href]="'/#' + item.id" (click)="goTo($event, item.id)">{{ item.label }}</a>
-            </li>
-          }
-        </ul>
-      </nav>
-      <div class="menu-actions">
-        <app-motion-toggle />
-        <a class="btn" href="/#contato" (click)="goTo($event, 'contato')">Agendar conversa</a>
-      </div>
+  <div #menuPanel id="menu-mobile" class="menu on-dark" [hidden]="!menuOpen()">
+    <nav aria-label="Seções do site (menu)">
+      <ul role="list">
+        @for (item of nav; track item.id; let i = $index) {
+          <li [style.--i]="i">
+            <a class="menu-link" [href]="'/#' + item.id" (click)="goTo($event, item.id)">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+    </nav>
+    <div class="menu-actions">
+      <a class="btn btn--light" href="/#contato" (click)="goTo($event, 'contato')">Agendar conversa</a>
     </div>
   </div>
 </header>
+
+<div class="rail" appScrollProgress aria-hidden="true">
+  <span class="rail-line"><span class="rail-value" data-progress-label>00</span></span>
+  <span class="rail-label">Role</span>
+</div>

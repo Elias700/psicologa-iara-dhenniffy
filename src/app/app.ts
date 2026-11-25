@@ -1,4 +1,3 @@
-import { ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, afterNextRender, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -30,8 +29,8 @@ import { WhatsappFabComponent } from './shared/whatsapp-fab/whatsapp-fab.compone
       z-index: 100;
       padding: 0.75rem 1.25rem;
       border-radius: 999px;
-      background: var(--color-deep);
-      color: var(--color-on-deep);
+      background: var(--forest-deep);
+      color: var(--on-dark);
       font-weight: 700;
       transform: translateY(-200%);
     }
@@ -46,12 +45,7 @@ import { WhatsappFabComponent } from './shared/whatsapp-fab/whatsapp-fab.compone
 export class App {
   constructor() {
     const animation = inject(ScrollAnimationService);
-    const scroller = inject(ViewportScroller);
 
-    afterNextRender(() => {
-      // Âncoras vindas de outra página (/privacidade → /#contato) também compensam o header fixo.
-      scroller.setOffset(() => [0, (document.querySelector('app-header')?.getBoundingClientRect().height ?? 72) + 8]);
-      void animation.init();
-    });
+    afterNextRender(() => animation.initOnIntent());
   }
 }

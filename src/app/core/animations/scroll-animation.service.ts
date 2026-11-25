@@ -16,18 +16,19 @@ export interface AnimationLibs {
 /** Valores derivados do clone (docs/clone-analysis.md), em versão calma. */
 export const MOTION = {
   ease: 'iaraOut', // cubic-bezier(0.25, 1, 0.5, 1) — "Out" do clone
-  easeInOut: 'iaraInOut', // cubic-bezier(0.65, 0, 0.35, 1) — "InOut" suavizado
   duration: 0.9,
   stagger: 0.08,
   shift: 24,
   shiftMobile: 16,
-  reducedFade: 0.15,
 } as const;
 
 export const BREAKPOINTS = {
   md: 768,
   lg: 1024,
 } as const;
+
+/** Cenas fixas. Mesma condição do mixin `stage` (src/styles/_mixins.scss). */
+export const STAGE_QUERY = '(min-width: 64rem) and (min-height: 40rem)';
 
 /**
  * Inicializa GSAP, ScrollTrigger, SplitText e Lenis só no navegador (import dinâmico),
@@ -66,7 +67,30 @@ export class ScrollAnimationService {
     });
   }
 
-  /** Chamado uma vez pelo App em afterNextRender. */
+  /**
+   * Chamado uma vez pelo App em afterNextRender. O hero não depende da GSAP, então as bibliotecas
+   * só carregam no primeiro gesto da pessoa, se a página já abrir rolada, ou depois de 6s.
+   */
+  initOnIntent(): void {
+    if (!this.isBrowser || this.initPromise) return;
+    const view = this.document.defaultView!;
+    if (view.scrollY > 0 || view.location.hash) {
+      void this.init();
+      return;
+    }
+    const events = ['scroll', 'wheel', 'touchstart', 'pointerdown', 'pointermove', 'keydown'] as const;
+    const start = () => {
+      clearTimeout(timer);
+      events.forEach((name) => view.removeEventListener(name, start));
+      void this.init();
+    };
+    const timer = setTimeout(start, 6000);
+    this.zone.runOutsideAngular(() =>
+      events.forEach((name) => view.addEventListener(name, start, { passive: true })),
+    );
+  }
+
+
   init(): Promise<void> {
     if (!this.isBrowser) return Promise.resolve();
     this.initPromise ??= this.zone.runOutsideAngular(() => this.load());
@@ -84,12 +108,11 @@ export class ScrollAnimationService {
 
     gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
     CustomEase.create(MOTION.ease, '0.25,1,0.5,1');
-    CustomEase.create(MOTION.easeInOut, '0.65,0,0.35,1');
     ScrollTrigger.config({ ignoreMobileResize: true });
     this.LenisCtor = lenisModule.default;
 
     const view = this.document.defaultView;
-    view?.addEventListener('load', () => this.scheduleRefresh(), { once: true });
+    if (this.document.readyState !== 'complete') view?.addEventListener('load', () => this.scheduleRefresh(), { once: true });
     void this.document.fonts?.ready.then(() => this.scheduleRefresh());
 
     let resizeTimer: ReturnType<typeof setTimeout> | null = null;
@@ -208,8 +231,10 @@ export class ScrollAnimationService {
 
     const view = this.document.defaultView!;
     // O <html> tem scroll-padding-top = altura do header + 1rem (vale também sem JS).
-    // O Lenis já considera esse valor; na rolagem nativa calculamos o mesmo deslocamento.
-    const scrollPadding = parseFloat(getComputedStyle(this.document.documentElement).scrollPaddingTop) || 88;
+    // As cenas descontam esse valor com scroll-margin. O Lenis já considera os dois; na rolagem nativa, somamos aqui.
+    const inset =
+      (parseFloat(getComputedStyle(this.document.documentElement).scrollPaddingTop) || 0) +
+      (parseFloat(getComputedStyle(target).scrollMarginTop) || 0);
     const focusTarget = () => {
       if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
@@ -222,7 +247,7 @@ export class ScrollAnimationService {
       if (!this.programmaticScroll) return;
       this.programmaticScroll = false;
       // Se algo mudou o layout no caminho (ex.: uma seção hidratou), corrige sem animação.
-      const drift = target.getBoundingClientRect().top - scrollPadding;
+      const drift = target.getBoundingClientRect().top - inset;
       if (Math.abs(drift) > 4) view.scrollTo({ top: view.scrollY + drift, behavior: 'auto' });
       focusTarget();
       if (this.refreshPending) {
@@ -237,7 +262,7 @@ export class ScrollAnimationService {
     }
 
     const smooth = this.motion.motionEnabled();
-    const top = target.getBoundingClientRect().top + view.scrollY - scrollPadding;
+    const top = target.getBoundingClientRect().top + view.scrollY - inset;
     view.scrollTo({ top, behavior: smooth ? 'smooth' : 'auto' });
     if (!smooth) {
       finish();
@@ -253,6 +278,12 @@ export class ScrollAnimationService {
       },
       { once: true },
     );
+  }
+
+  scrollToTop(): void {
+    if (!this.isBrowser) return;
+    if (this.lenis) this.lenis.scrollTo(0, { immediate: true });
+    else this.document.defaultView?.scrollTo({ top: 0, behavior: 'auto' });
   }
 
   /** Trava a rolagem da página (menu mobile aberto). */

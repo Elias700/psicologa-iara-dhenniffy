@@ -1,23 +1,52 @@
 @use 'mixins' as *;
 
-.narrow {
-  max-width: calc(56rem + 2 * var(--gutter));
+.section {
+  background: var(--cream);
 }
 
-.list {
-  border-top: 1px solid var(--color-line-strong);
+.grid {
+  display: grid;
+  gap: var(--space-7);
+
+  @include from($bp-lg) {
+    grid-template-columns: 2fr 3fr;
+    gap: clamp(3rem, 6vw, 7rem);
+  }
 }
 
-.item {
-  border-bottom: 1px solid var(--color-line-strong);
+.head {
+  color: var(--forest);
 
-  // Abertura suave da altura onde o navegador suporta (progressivo); senão abre na hora.
+  em {
+    display: block;
+    color: var(--clay);
+  }
+
+  @include from($bp-lg) {
+    position: sticky;
+    top: calc(var(--header-h) + 3rem);
+    align-self: start;
+
+    h2 {
+      font-size: clamp(3.5rem, 6vw, 6.5rem);
+    }
+  }
+}
+
+details {
+  border-bottom: 1px solid var(--line);
+
+  &:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  // Abre com a altura em transição onde o navegador suporta; senão, abre na hora.
   @include motion-ok {
     interpolate-size: allow-keywords;
 
     &::details-content {
       block-size: 0;
-      overflow: hidden;
+      overflow: clip;
       transition:
         block-size 350ms var(--ease-out),
         content-visibility 350ms allow-discrete;
@@ -27,6 +56,12 @@
       block-size: auto;
     }
   }
+
+  p {
+    padding-bottom: var(--space-6);
+    font-size: var(--text-lg);
+    line-height: 1.55;
+  }
 }
 
 summary {
@@ -34,8 +69,7 @@ summary {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-5);
-  min-height: 44px;
-  padding-block: var(--space-5);
+  padding-block: 1.375rem;
   cursor: pointer;
   list-style: none;
 
@@ -43,62 +77,49 @@ summary {
     display: none;
   }
 
-  &:hover .question {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+  h3 {
+    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2.125rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+
+  &:hover h3 {
+    color: var(--clay);
   }
 }
 
-.question {
-  font-family: var(--font-body);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: 0;
-  color: var(--color-text);
-}
-
-// Ícone + que vira − (a barra vertical encolhe; sem girar)
+// Ícone + que vira − (a barra vertical encolhe)
 .icon {
   position: relative;
   flex: none;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: 1.5px solid var(--color-primary);
+  width: 1.25rem;
+  height: 1.25rem;
 
   &::before,
   &::after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0.875rem;
+    background: var(--forest);
+  }
+
+  &::before {
+    inset: calc(50% - 1px) 0 auto;
     height: 2px;
-    margin: -1px 0 0 -0.4375rem;
-    background: var(--color-primary);
-    border-radius: 2px;
   }
 
   &::after {
-    transform: rotate(90deg);
-
-    @include motion-ok {
-      transition: transform var(--dur-ui) var(--ease-out);
-    }
-  }
-
-  [open] > summary &::after {
-    transform: rotate(90deg) scaleX(0);
+    inset: 0 auto 0 calc(50% - 1px);
+    width: 2px;
   }
 }
 
-.answer {
-  padding-bottom: var(--space-5);
-  padding-right: var(--space-7);
-
-  p {
-    color: var(--color-text-muted);
+.icon::after {
+  @include motion-ok {
+    transition: transform var(--dur-ui) var(--ease-out);
   }
+}
+
+[open] .icon::after {
+  transform: scaleY(0);
 }

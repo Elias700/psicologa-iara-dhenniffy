@@ -1,77 +1,201 @@
 @use 'mixins' as *;
 
-.cards {
+.scene {
+  --arch-w: 27rem;
+  --arch-gap: 1.75rem;
+  --intro-w: 47vw;
+  --end: 8vw;
+
+  position: relative;
+  padding-block: var(--space-section);
+  background: var(--sage);
+
+  &:focus {
+    outline: none;
+  }
+
+  // Altura = tela + distância que o trilho percorre. Só CSS: o layout não muda quando o JS chega.
+  @include stage {
+    height: calc(100svh + var(--intro-w) + 5 * (var(--arch-w) + var(--arch-gap)) + var(--end) - 100vw);
+    min-height: 100svh;
+    padding-block: 0;
+  }
+}
+
+.viewport {
+  @include stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    // Se o JS falhar, ainda dá para rolar a lista com o gesto horizontal
+    overflow-x: auto;
+    overflow-y: clip;
+  }
+}
+
+.scene.is-running .viewport {
+  overflow: clip;
+}
+
+.track {
+  padding-inline: var(--gutter);
+
+  @include stage {
+    display: flex;
+    align-items: flex-end;
+    width: max-content;
+    height: 100%;
+    padding-inline: 0 var(--end);
+    will-change: transform;
+  }
+}
+
+.intro {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
+  margin-bottom: var(--space-7);
+  color: var(--forest);
+
+  em {
+    display: block;
+    color: var(--clay);
+  }
+
+  h2 {
+    @include from($bp-lg) {
+      font-size: min(var(--text-title), 6.8vw);
+    }
+  }
+
+  .lead {
+    max-width: 30ch;
+    color: var(--ink);
+  }
+
+  @include stage {
+    align-self: center;
+    flex: none;
+    width: var(--intro-w);
+    margin: 0;
+    padding-inline: var(--gutter) 3vw;
+  }
+}
+
+.arches {
+  display: grid;
+  gap: 1rem;
 
   @include from($bp-md) {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-5);
+    gap: 1.5rem;
   }
 
   @include from($bp-lg) {
     grid-template-columns: repeat(6, 1fr);
+  }
 
-    // 3 em cima, 2 embaixo (o último ocupa mais espaço)
-    .card {
-      grid-column: span 2;
-    }
-    .card:nth-child(4) {
-      grid-column: span 3;
-    }
-    .card:nth-child(5) {
-      grid-column: span 3;
-    }
+  @include stage {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    height: 100%;
   }
 }
 
-.card {
-  display: grid;
-  align-content: start;
-  gap: var(--space-3);
-  padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
+.arch {
+  --sprig-vein: transparent;
+
   position: relative;
-
-  // Linha superior que aparece no hover (derivada do hover de card do clone)
-  &::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: var(--space-5);
-    right: var(--space-5);
-    height: 3px;
-    border-radius: 0 0 3px 3px;
-    background: var(--color-gold-ink);
-    transform: scaleX(0.25);
-    transform-origin: left;
-
-    @include motion-ok {
-      transition: transform var(--dur-ui) var(--ease-out);
-    }
-  }
-
-  &:hover::before {
-    transform: scaleX(1);
-  }
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.875rem;
+  max-width: none;
+  min-height: 27rem;
+  padding: 8rem 2rem 2.25rem;
+  border-radius: var(--arch);
 
   h3 {
-    font-size: var(--text-xl);
+    font-size: clamp(2.75rem, 2rem + 2vw, 4.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
   }
 
-  &--open {
-    background: var(--color-sage);
+  p {
+    line-height: 1.5;
+  }
 
-    @include from($bp-md) {
+  &:nth-child(1) {
+    background: var(--forest);
+    color: var(--on-dark);
+    --leaf: #2b4a38;
+  }
+  &:nth-child(2) {
+    background: var(--sand);
+    --leaf: #cdb57f;
+  }
+  &:nth-child(3) {
+    background: var(--cream);
+    --leaf: #e6dfca;
+  }
+  &:nth-child(4) {
+    background: var(--clay);
+    color: var(--on-dark);
+    --leaf: #9a4435;
+  }
+  &:nth-child(5) {
+    background: var(--olive-dark);
+    color: var(--on-dark);
+    --leaf: #5b563c;
+  }
+
+  @include from($bp-md) {
+    &:nth-child(5) {
       grid-column: 1 / -1;
     }
   }
+
+  @include from($bp-lg) {
+    grid-column: span 2;
+
+    &:nth-child(n + 4) {
+      grid-column: span 3;
+    }
+  }
+
+  // Alturas escalonadas: o ritmo da colunata
+  @include stage {
+    flex: none;
+    width: var(--arch-w);
+    margin-right: var(--arch-gap);
+    height: min(74svh, 44rem);
+    min-height: 0;
+    padding: 9rem 2.5rem 3rem;
+    border-radius: 999px 999px 0 0;
+  }
 }
 
-.examples {
-  display: grid;
-  gap: var(--space-1);
-  padding-left: 1.25rem;
+.arch:nth-child(even) {
+  @include stage {
+    height: min(64svh, 39rem);
+  }
+}
+
+.sprig {
+  position: absolute;
+  z-index: -1;
+  top: 8%;
+  left: 50%;
+  width: 62%;
+  translate: -50% 0;
+  color: var(--leaf);
+
+  .arch:nth-child(even) & {
+    rotate: 14deg;
+  }
+  .arch:nth-child(3) & {
+    rotate: -12deg;
+  }
 }

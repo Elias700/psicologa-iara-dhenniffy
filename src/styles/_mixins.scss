@@ -1,4 +1,3 @@
-// Breakpoints (mobile-first)
 $bp-sm: 30rem; // 480px
 $bp-md: 48rem; // 768px
 $bp-lg: 64rem; // 1024px
@@ -16,22 +15,30 @@ $bp-xl: 80rem; // 1280px
   }
 }
 
-// Transições só quando o movimento está ativo
-@mixin motion-ok {
-  @media (prefers-reduced-motion: no-preference) {
-    :root:not([data-motion='reduced']) & {
-      @content;
-    }
-  }
+// Seletor que indica "movimento ativo" (o script do index.html resolve prefers-reduced-motion em data-motion).
+// Em componentes é preciso :host-context: o encapsulamento do Angular reescreve ":root[...]" e a regra não casa.
+$motion-component: ":host-context([data-motion='full'])";
+$motion-global: ":root[data-motion='full']";
 
-  :root[data-motion='full'] & {
+@mixin motion-ok($scope: $motion-component) {
+  #{$scope} & {
     @content;
   }
 }
 
-@mixin focus-ring($color: var(--color-focus)) {
+// Cenas fixas (hero sob a cúpula, colunata horizontal): telas largas, altas o bastante e com movimento.
+// Mesma condição de STAGE_QUERY (scroll-animation.service.ts).
+@mixin stage($scope: $motion-component) {
+  @media (min-width: 64rem) and (min-height: 40rem) {
+    #{$scope} & {
+      @content;
+    }
+  }
+}
+
+@mixin focus-ring($color: var(--focus)) {
   outline: 3px solid $color;
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 @mixin visually-hidden {
@@ -41,7 +48,7 @@ $bp-xl: 80rem; // 1280px
   padding: 0 !important;
   margin: -1px !important;
   overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
   white-space: nowrap !important;
   border: 0 !important;
 }

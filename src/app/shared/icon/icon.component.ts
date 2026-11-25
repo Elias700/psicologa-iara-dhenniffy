@@ -9,7 +9,6 @@ export type IconName =
   | 'menu'
   | 'close'
   | 'plus'
-  | 'motion'
   | 'phone'
   | 'external';
 
@@ -24,7 +23,6 @@ const PATHS: Record<IconName, string> = {
   menu: 'M4 7h16M4 12h16M4 17h16',
   close: 'M6 6l12 12M18 6 6 18',
   plus: 'M12 5v14M5 12h14',
-  motion: 'M3 12c2.5-4 5.5-4 8 0s5.5 4 8 0M3 17c2.5-4 5.5-4 8 0s5.5 4 8 0M3 7c2.5-4 5.5-4 8 0s5.5 4 8 0',
   phone:
     'M6.6 3.5 9 3l1.6 4-2 1.4a11 11 0 0 0 7 7l1.4-2 4 1.6-.5 2.4a2 2 0 0 1-2 1.6A16 16 0 0 1 3 5.5a2 2 0 0 1 1.6-2Z',
   external: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5',

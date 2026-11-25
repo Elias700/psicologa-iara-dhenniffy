@@ -23,6 +23,8 @@ export class SplitTextDirective extends MotionDirectiveBase {
         mask: 'lines',
         linesClass: 'split-line',
         autoSplit: true,
+        // aria-label só é permitido em títulos; em <p> as linhas continuam legíveis como texto.
+        aria: /^H[1-6]$/.test(this.host.tagName) ? 'auto' : 'none',
         onSplit: (self) =>
           gsap.from(self.lines, {
             yPercent: 100,

@@ -1,48 +1,46 @@
 // Design tokens — Iara Dhenniffy · Psicóloga
-// Paleta extraída da logo (verde + dourado) e do Instagram (oliva, creme, vermelho),
-// com saturação reduzida e contraste confortável. Ver docs/clone-analysis.md, seção 5.
+// Cores: verde e dourado da logo; oliva/sálvia e vermelho dos posts da Iara.
 
 :root {
   // Cores
-  --color-bg: #f7f3ea; // creme quente
-  --color-surface: #eeeadb; // areia clara
-  --color-sage: #e3e4d3; // sálvia clara
-  --color-text: #22302a; // grafite esverdeado — 12,4:1 no creme
-  --color-text-muted: #44504a; // 7,6:1 no creme
-  --color-primary: #2f4a3a; // verde da logo — 8,8:1 no creme
-  --color-primary-hover: #243b2e;
-  --color-deep: #1e3328; // verde profundo (contato e rodapé)
-  --color-on-deep: #f7f3ea; // 12,2:1 no verde profundo
-  --color-on-deep-muted: #cfd6cd;
-  --color-gold: #d9b26a; // dourado — só sobre o verde profundo
-  --color-gold-ink: #8a5a1f; // dourado escuro — detalhes sobre fundo claro (texto grande/ícones)
-  --color-accent: #9a4a33; // terracota discreta
-  --color-line: rgb(34 48 42 / 0.16);
-  --color-line-strong: rgb(34 48 42 / 0.32);
-  --color-error: #9b2c1f; // 6,6:1 no creme
-  --color-focus: #2f4a3a;
-
-  // Fundo da página (muda de forma gradual entre seções — appSectionTheme)
-  --page-bg: var(--color-bg);
+  --cream: #f6f1e4;
+  --paper: #fbf8f0;
+  --sage: #cdd2b8;
+  --sage-deep: #b7be9d;
+  --sand: #dcc797;
+  --olive-dark: #4b4730; // fundo da citação
+  --forest: #1d3628; // verde da logo
+  --forest-deep: #14271c;
+  --ink: #16241c;
+  --ink-soft: #2f3c34; // ≥ 7:1 no creme e na sálvia
+  --on-dark: #f6f1e4;
+  --on-dark-soft: #d3d8c6;
+  --gold: #d9b26a; // só sobre verde
+  --gold-ink: #73490f; // dourado escuro sobre fundo claro
+  --clay: #8a3324; // vermelho da marca, menos saturado
+  --line: rgb(22 36 28 / 0.18);
+  --line-strong: rgb(22 36 28 / 0.6);
+  --line-dark: rgb(246 241 228 / 0.22);
+  --error: #8f2417;
+  --focus: var(--forest);
 
   // Tipografia
-  --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, -apple-system,
-    'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
 
-  --text-sm: clamp(0.9375rem, 0.91rem + 0.12vw, 1rem); // 15–16px
-  --text-base: clamp(1.0625rem, 1.03rem + 0.15vw, 1.125rem); // 17–18px
-  --text-lg: clamp(1.1875rem, 1.12rem + 0.3vw, 1.375rem); // 19–22px
-  --text-xl: clamp(1.375rem, 1.24rem + 0.6vw, 1.75rem); // 22–28px
-  --text-2xl: clamp(1.75rem, 1.45rem + 1.3vw, 2.625rem); // 28–42px
-  --text-3xl: clamp(2.125rem, 1.6rem + 2.3vw, 3.75rem); // 34–60px
-  --text-display: clamp(2.375rem, 1.6rem + 3.4vw, 4.75rem); // 38–76px
+  --text-sm: 1rem;
+  --text-base: clamp(1.0625rem, 1.03rem + 0.15vw, 1.1875rem); // 17–19px
+  --text-lg: clamp(1.1875rem, 1.1rem + 0.35vw, 1.4375rem);
+  --text-xl: clamp(1.75rem, 1.5rem + 0.9vw, 2.375rem);
+  --text-2xl: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  --text-title: clamp(2.75rem, 2rem + 4.9vw, 7rem);
+  --text-display: clamp(3.25rem, 1.4rem + 7.4vw, 9.5rem);
 
-  --leading-body: 1.65;
-  --leading-tight: 1.15;
-  --measure: 68ch;
+  --leading-body: 1.62;
+  --measure: 62ch;
 
-  // Espaçamento
+  // Espaço
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -50,40 +48,33 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  --space-8: 4rem;
-  --space-section: clamp(4.5rem, 3rem + 6vw, 9rem);
-  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
-  --container: 75rem; // 1200px
-  --container-wide: 90rem;
+  --space-8: 4.5rem;
+  --space-section: clamp(5.5rem, 3rem + 9vw, 12rem);
+  // Margem larga no desktop: é onde ficam o selo e o trilho de progresso, sem cobrir conteúdo.
+  --gutter: clamp(1.25rem, 5vw, 2.5rem);
+  --container: 88rem;
 
   // Forma
-  --radius-sm: 0.5rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.75rem;
-  --radius-arch: 999px 999px var(--radius-lg) var(--radius-lg);
+  --radius-sm: 0.625rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 2rem;
+  --arch: 50vw 50vw 0 0;
 
-  // Header
   --header-h: 4.5rem;
 
-  // Movimento (derivado do clone, versão calma)
+  // Movimento (derivado do modelo, em versão calma)
   --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
   --dur-fast: 200ms;
-  --dur-ui: 300ms;
-  --dur-base: 800ms;
-  --dur-slow: 1000ms;
-  --shift: 24px; // deslocamento máximo dos reveals (AGENTS.md: ≤ 40px)
-
-  // Sombra suave
-  --shadow-soft: 0 1px 2px rgb(30 51 40 / 0.06), 0 8px 24px rgb(30 51 40 / 0.06);
+  --dur-ui: 320ms;
+  --dur-base: 900ms;
 
   color-scheme: light;
 }
 
-@media (max-width: 47.99rem) {
+@media (min-width: 64rem) {
   :root {
-    --header-h: 4rem;
-    --shift: 16px;
+    --gutter: clamp(6rem, 8vw, 11rem);
+    --header-h: 5.5rem;
   }
 }

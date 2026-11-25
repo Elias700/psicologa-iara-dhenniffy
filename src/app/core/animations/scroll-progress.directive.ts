@@ -1,29 +1,28 @@
 import { Directive } from '@angular/core';
 
 import { MotionDirectiveBase } from './motion-directive.base';
-import { AnimationLibs, BREAKPOINTS } from './scroll-animation.service';
+import { AnimationLibs } from './scroll-animation.service';
 
 /**
- * Barra fina de progresso de leitura (derivada da scrollbar customizada do clone).
- * Ajuda a saber "quanto falta". Só em telas ≥ 1024px e com movimento ativo.
+ * Trilho lateral de progresso (derivado da scrollbar customizada do modelo).
+ * Escreve `--progress` (0 a 1) no elemento e o percentual em `[data-progress-label]`.
+ * Decorativo: só em telas ≥ 1280px e com movimento ativo.
  */
-@Directive({
-  selector: '[appScrollProgress]',
-})
+@Directive({ selector: '[appScrollProgress]' })
 export class ScrollProgressDirective extends MotionDirectiveBase {
-  protected build({ gsap }: AnimationLibs, mm: ReturnType<AnimationLibs['gsap']['matchMedia']>): void {
-    mm.add(`(min-width: ${BREAKPOINTS.lg}px)`, () => {
-      gsap.set(this.host, { autoAlpha: 1 });
-      gsap.fromTo(
-        this.host,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          ease: 'none',
-          transformOrigin: 'left center',
-          scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.3 },
+  protected build({ ScrollTrigger }: AnimationLibs, mm: ReturnType<AnimationLibs['gsap']['matchMedia']>): void {
+    const label = this.host.querySelector<HTMLElement>('[data-progress-label]');
+
+    mm.add('(min-width: 1280px)', () => {
+      ScrollTrigger.create({
+        trigger: document.documentElement,
+        start: 'top top',
+        end: 'bottom bottom',
+        onUpdate: ({ progress }) => {
+          this.host.style.setProperty('--progress', progress.toFixed(4));
+          if (label) label.textContent = String(Math.round(progress * 100)).padStart(2, '0');
         },
-      );
+      });
     });
   }
 }

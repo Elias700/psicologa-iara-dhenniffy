@@ -1,25 +1,82 @@
 @use 'mixins' as *;
 
-.pillars {
-  display: grid;
-  gap: var(--space-6) var(--space-7);
+.section {
+  background: var(--cream);
+}
 
-  @include from($bp-md) {
-    grid-template-columns: repeat(2, 1fr);
+h2 {
+  color: var(--forest);
+
+  em {
+    display: block;
+    color: var(--clay);
+  }
+
+  @include from($bp-lg) {
+    margin-inline: auto;
+    text-align: center;
   }
 }
 
-.pillar {
+.quadrants {
+  position: relative;
   display: grid;
-  gap: var(--space-3);
-  padding-top: var(--space-5);
-  border-top: 2px solid var(--color-line-strong);
+  margin-top: clamp(3rem, 7vw, 7rem);
+
+  @include from($bp-md) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  li:not(.mark) {
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--line);
+
+    @include from($bp-md) {
+      padding: clamp(2.5rem, 5vw, 5.5rem);
+
+      &:nth-child(-n + 2) {
+        border-top: 0;
+      }
+      &:nth-child(odd) {
+        padding-left: 0;
+        border-right: 1px solid var(--line);
+      }
+      &:nth-child(even) {
+        padding-right: 0;
+      }
+    }
+  }
 
   h3 {
-    font-size: var(--text-xl);
+    font-size: clamp(2rem, 1.5rem + 1.7vw, 3.25rem);
+    letter-spacing: -0.02em;
   }
 
   p {
+    max-width: 38ch;
+    margin-top: var(--space-4);
     font-size: var(--text-lg);
+  }
+}
+
+.mark {
+  display: none;
+
+  @include from($bp-md) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 7rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--cream);
+    translate: -50% -50%;
+
+    img {
+      width: 4rem;
+      height: auto;
+    }
   }
 }

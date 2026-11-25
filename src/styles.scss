@@ -4,26 +4,27 @@
 @use 'mixins' as *;
 
 html {
-  background: var(--color-bg);
+  background: var(--cream);
 }
 
 body {
-  background: var(--page-bg);
+  background: var(--cream);
   min-height: 100vh;
-  overflow-x: hidden;
-
-  @include motion-ok {
-    transition: background-color 0.6s var(--ease-standard);
-  }
+  overflow-x: clip;
 }
 
 ::selection {
-  background: var(--color-gold);
-  color: var(--color-deep);
+  background: var(--gold);
+  color: var(--forest-deep);
 }
 
 :focus-visible {
   @include focus-ring;
+}
+
+.on-dark {
+  --focus: var(--gold);
+  color: var(--on-dark);
 }
 
 // ---------- Layout ----------
@@ -35,6 +36,7 @@ body {
 }
 
 .section {
+  position: relative;
   padding-block: var(--space-section);
 
   &:focus {
@@ -42,48 +44,14 @@ body {
   }
 }
 
-// Seções têm fundo próprio. Com movimento ativo, o fundo passa a ser o da página,
-// que muda de forma gradual (appSectionTheme).
-[data-bg='bg'] {
-  background: var(--color-bg);
-}
-[data-bg='surface'] {
-  background: var(--color-surface);
-}
-[data-bg='sage'] {
-  background: var(--color-sage);
-}
-:root.motion-ready[data-motion='full'] main [data-bg]:not([data-bg-fixed]) {
-  background: transparent;
-}
-
-.eyebrow {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-gold-ink);
-}
-
-.section-head {
-  display: grid;
-  gap: var(--space-4);
-  margin-bottom: var(--space-7);
-  max-width: 46rem;
-
-  p {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-  }
+// As cenas ocupam a tela toda sob o header flutuante: a âncora para no topo exato da cena.
+// (O scroll-padding do <html> continua valendo para o foco por teclado.)
+main [id]:where(section, .opening) {
+  scroll-margin-top: calc(-1 * (var(--header-h) + 1rem));
 }
 
 .lead {
   font-size: var(--text-lg);
-}
-
-.muted {
-  color: var(--color-text-muted);
 }
 
 .visually-hidden {
@@ -92,138 +60,116 @@ body {
 
 // ---------- Botões ----------
 .btn {
-  --btn-bg: var(--color-primary);
-  --btn-fg: var(--color-on-deep);
-  --btn-border: var(--color-primary);
+  --btn-bg: var(--forest);
+  --btn-fg: var(--on-dark);
+  --btn-border: var(--forest);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
-  min-height: 3rem;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid var(--btn-border);
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.75rem 1.75rem;
+  border: 1.5px solid var(--btn-border);
   border-radius: 999px;
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-weight: 700;
-  font-size: var(--text-base);
   line-height: 1.2;
-  text-decoration: none;
   text-align: center;
+  text-decoration: none;
 
-  @include motion-ok {
+  @include motion-ok($motion-global) {
     transition:
       background-color var(--dur-ui) var(--ease-standard),
-      color var(--dur-ui) var(--ease-standard),
-      border-color var(--dur-ui) var(--ease-standard);
+      border-color var(--dur-ui) var(--ease-standard),
+      color var(--dur-ui) var(--ease-standard);
   }
 
   &:hover {
-    --btn-bg: var(--color-primary-hover);
-    --btn-border: var(--color-primary-hover);
-  }
-
-  svg {
-    width: 1.25em;
-    height: 1.25em;
-    flex: none;
+    --btn-bg: var(--forest-deep);
   }
 
   &--ghost {
     --btn-bg: transparent;
-    --btn-fg: var(--color-primary);
+    --btn-fg: var(--ink);
+    --btn-border: var(--ink);
 
     &:hover {
-      --btn-bg: rgb(47 74 58 / 0.08);
-      --btn-border: var(--color-primary);
+      --btn-bg: var(--ink);
+      --btn-fg: var(--on-dark);
     }
   }
 
   &--light {
-    --btn-bg: var(--color-on-deep);
-    --btn-fg: var(--color-deep);
-    --btn-border: var(--color-on-deep);
+    --btn-bg: var(--cream);
+    --btn-fg: var(--forest-deep);
+    --btn-border: var(--cream);
 
     &:hover {
-      --btn-bg: var(--color-gold);
-      --btn-border: var(--color-gold);
+      --btn-bg: var(--gold);
+      --btn-border: var(--gold);
     }
   }
 
   &--outline-light {
     --btn-bg: transparent;
-    --btn-fg: var(--color-on-deep);
-    --btn-border: rgb(247 243 234 / 0.6);
+    --btn-fg: var(--on-dark);
+    --btn-border: var(--on-dark-soft);
 
     &:hover {
-      --btn-bg: rgb(247 243 234 / 0.1);
-      --btn-border: var(--color-on-deep);
+      --btn-bg: var(--cream);
+      --btn-fg: var(--forest-deep);
     }
   }
 }
 
-// Links de texto com sublinhado que cresce (derivado do hover do clone, sem dividir letras)
 .link {
-  color: var(--color-primary);
+  color: inherit;
   font-weight: 700;
   text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 
   &:hover {
-    text-decoration-color: var(--color-gold-ink);
+    text-decoration-thickness: 2px;
   }
 }
 
 // ---------- Estados iniciais das animações ----------
-// O script inline do index.html coloca .js-anim e data-motion no <html> antes da primeira pintura.
 // Cada elemento fica escondido só até a diretiva dele aplicar o estado inicial (.anim-ready).
-// Garantias contra conteúdo preso: sem JS nada fica escondido; se o app não iniciar em 4s,
-// .anim-failsafe mostra tudo; e um observador mostra qualquer elemento que fique na tela sem iniciar.
+// Sem JS nada fica escondido; .anim-failsafe mostra tudo se o app não iniciar em 4s.
 :root.js-anim[data-motion='full']:not(.anim-failsafe) [data-anim]:not(.anim-ready) {
   visibility: hidden;
 }
 
-// Entrada do hero em CSS puro (não espera o JS, para não atrasar o LCP).
-@keyframes hero-text-in {
+// Máscaras do SplitText: folga para descendentes (ç, g, p) não serem cortadas.
+.split-line-mask {
+  padding-block: 0.14em;
+  margin-block: -0.14em;
+}
+
+// Entrada do hero em CSS puro, para não atrasar o LCP.
+@keyframes rise-in {
   from {
     opacity: 0;
-    transform: translate3d(0, var(--shift), 0);
+    transform: translate3d(0, 24px, 0);
   }
 }
 
-@keyframes hero-mask-in {
+@keyframes line-in {
   from {
-    clip-path: inset(10% 0 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
+    transform: translate3d(0, 105%, 0);
   }
 }
 
-@keyframes hero-img-in {
+@keyframes figure-in {
   from {
-    transform: scale(1.04);
+    transform: translate3d(0, 32px, 0);
   }
 }
 
-:root[data-motion='full'] {
-  .hero-enter {
-    animation: hero-text-in var(--dur-base) var(--ease-out) both;
-    animation-delay: calc(var(--i, 0) * 90ms + 80ms);
-  }
-
-  .hero-mask {
-    animation: hero-mask-in var(--dur-slow) var(--ease-out) both;
-  }
-
-  .hero-mask img {
-    animation: hero-img-in 1.2s var(--ease-out) both;
-  }
-}
-
-// Lenis (smooth scroll) — CSS recomendado pela biblioteca
+// Lenis (smooth scroll)
 html.lenis,
 html.lenis body {
   height: auto;
@@ -233,16 +179,4 @@ html.lenis body {
 }
 .lenis.lenis-stopped {
   overflow: hidden;
-}
-
-// Linhas e palavras criadas pelo SplitText
-.split-line {
-  display: block;
-}
-
-// Movimento reduzido: sem rolagem suave
-:root[data-motion='reduced'] *,
-:root[data-motion='reduced'] *::before,
-:root[data-motion='reduced'] *::after {
-  scroll-behavior: auto !important;
 }

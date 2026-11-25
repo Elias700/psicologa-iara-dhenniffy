@@ -13,8 +13,15 @@ export interface NavItem {
   readonly label: string;
 }
 
+/** Título com um trecho em itálico. */
+export interface Title {
+  readonly start: string;
+  readonly em: string;
+}
+
 export interface Audience {
   readonly id: string;
+  readonly name: string;
   readonly title: string;
   readonly text: string;
 }
@@ -35,7 +42,7 @@ export interface FaqItem {
 }
 
 export interface Photo {
-  readonly base: string; // caminho sem largura/extensão, ex.: images/iara-hero
+  readonly base: string; // caminho sem largura/extensão, ex.: images/iara-hero-cut
   readonly widths: readonly number[];
   readonly width: number; // largura intrínseca maior
   readonly height: number;
@@ -51,7 +58,7 @@ export const SITE = {
   description:
     'Psicoterapia online com Iara Dhenniffy, psicóloga autista (CRP 15/5286). Atendimento para autistas, pessoas com TDAH, TOC, bipolaridade e outras mentes fora do padrão.',
   ogImage: '/og-image.jpg',
-  themeColor: '#f7f3ea',
+  themeColor: '#cdd2b8',
 } as const;
 
 export const PROFESSIONAL = {
@@ -61,7 +68,8 @@ export const PROFESSIONAL = {
   bio: 'Psicóloga autista · TDAH · TOC · Bipolaridade',
   tagline: 'Atendo neurodivergentes e outras mentes fora do padrão',
 
-  // TODO(e-Psi): confirmar se o cadastro no e-Psi está ativo. Quando sim, trocar para true.
+  // TODO(e-Psi): a Resolução CFP 9/2024 revogou a 11/2018. Confirmar com o CRP-15 se o cadastro e-Psi ainda
+  // é exigido e se está ativo. Só então trocar para true.
   ePsiActive: false,
   ePsiUrl: 'https://e-psi.cfp.org.br/',
 
@@ -109,80 +117,92 @@ export const NAV: readonly NavItem[] = [
   { id: 'contato', label: 'Contato' },
 ];
 
+// Figuras recortadas (fundo transparente) a partir dos posts da Iara.
 export const PHOTOS = {
   hero: {
-    base: 'images/iara-hero',
-    widths: [320, 480, 630],
-    width: 630,
-    height: 990,
-    alt: 'Iara Dhenniffy, mulher de pele morena com tranças presas no alto da cabeça, sorrindo de leve com a mão apoiada no queixo.',
+    base: 'images/iara-hero-cut',
+    widths: [420, 640, 958],
+    width: 958,
+    height: 1360,
+    alt: 'Iara Dhenniffy de blusa vermelha, com tranças presas no alto da cabeça e a mão apoiada no queixo, olhando para a câmera.',
   },
   about: {
-    base: 'images/iara-sobre',
-    widths: [320, 480, 705],
-    width: 705,
-    height: 880,
-    alt: 'Iara Dhenniffy de camisa branca, com tranças longas, sorrindo e com o rosto apoiado na mão.',
+    base: 'images/iara-about-cut',
+    widths: [420, 640, 930],
+    width: 930,
+    height: 914,
+    alt: 'Iara Dhenniffy de camisa branca, com tranças longas, sorrindo com o rosto apoiado na mão.',
   },
-  contact: {
-    base: 'images/iara-contato',
-    widths: [320, 455],
-    width: 455,
-    height: 570,
-    alt: 'Retrato de Iara Dhenniffy de cabelo solto, olhando para o lado com expressão tranquila.',
+  quote: {
+    base: 'images/iara-quote-cut',
+    widths: [360, 520, 698],
+    width: 698,
+    height: 1400,
+    alt: 'Iara Dhenniffy de blazer preto e cabelo solto, olhando para o lado.',
   },
 } as const satisfies Record<string, Photo>;
 
 export const HERO = {
-  eyebrow: 'Psicoterapia online · Para todo o Brasil',
   h1: 'Psicóloga online para pessoas neurodivergentes',
-  display: 'Um espaço onde a sua mente não precisa caber no padrão.',
+  display: ['Um espaço onde', 'a sua mente', 'não precisa'],
+  displayEm: 'caber no padrão.',
   subtitle:
     'Psicoterapia online com Iara Dhenniffy, psicóloga autista. Atendo autistas, pessoas com TDAH, TOC, bipolaridade e outras mentes fora do padrão.',
   primaryCta: 'Mandar uma mensagem',
   secondaryCta: 'Ver como funciona',
 } as const;
 
+export const MANIFESTO = {
+  title: 'Aqui você não precisa mascarar',
+  text: 'Mascarar é esconder ou disfarçar seus traços para se encaixar no que os outros esperam. Isso cansa muito. Na terapia, você pode falar do seu jeito e no seu ritmo.',
+} as const;
+
 export const ABOUT = {
-  eyebrow: 'Sobre mim',
-  title: 'Oi, eu sou a Iara.',
+  title: { start: 'Oi, eu sou', em: 'a Iara.' } satisfies Title,
+  lead: 'Sou psicóloga e sou autista. Atendo pessoas neurodivergentes e outras mentes fora do padrão, por videochamada.',
   paragraphs: [
-    'Sou psicóloga e sou autista. Atendo pessoas neurodivergentes e outras mentes fora do padrão, por videochamada.',
     'Ser autista faz parte de como eu entendo o mundo e de como eu escuto as pessoas. Muitas coisas que você precisa explicar em outros lugares, eu também vivo.',
-    'Meu trabalho não é "consertar" ninguém. É ajudar você a entender como a sua mente funciona e a cuidar do que está difícil agora.',
+    'Meu trabalho não é “consertar” ninguém. É ajudar você a entender como a sua mente funciona e a cuidar do que está difícil agora.',
   ],
-  quote: 'Aqui você não precisa mascarar.',
-  quoteNote:
-    'Mascarar é esconder ou disfarçar seus traços para se encaixar no que os outros esperam. Isso cansa muito. Na terapia, você pode falar do seu jeito e no seu ritmo.',
+} as const;
+
+/** Frase publicada pela própria Iara no Instagram (post em public/). TODO(citação): confirmar o uso com a Iara. */
+export const QUOTE = {
+  text: 'Que o autoconhecimento, ainda que doa, seja escolhido.',
+  em: 'E que ninguém se perca tentando caber no que não é.',
 } as const;
 
 export const AUDIENCES = {
-  eyebrow: 'Para quem é',
-  title: 'Para quem é a terapia comigo',
+  title: { start: 'Para mentes', em: 'fora do padrão' } satisfies Title,
   intro: 'Para pessoas que sentem que funcionam diferente, com ou sem diagnóstico.',
   items: [
     {
       id: 'autismo',
+      name: 'Autismo',
       title: 'Pessoas autistas',
       text: 'Para entender o seu funcionamento, lidar com sobrecarga sensorial e social e cuidar das relações e da autoestima. Inclusive se o diagnóstico veio na vida adulta.',
     },
     {
       id: 'tdah',
+      name: 'TDAH',
       title: 'Pessoas com TDAH',
       text: 'Para organizar a rotina de um jeito que funcione para você, entender sua relação com foco, tempo e energia e diminuir a culpa que costuma vir junto.',
     },
     {
       id: 'toc',
+      name: 'TOC',
       title: 'Pessoas com TOC',
       text: 'Para falar sem vergonha sobre pensamentos que se repetem e rituais, e construir formas de lidar com a ansiedade no dia a dia.',
     },
     {
       id: 'bipolaridade',
+      name: 'Bipolaridade',
       title: 'Pessoas com transtorno bipolar',
       text: 'Para conhecer seus ciclos, perceber sinais de alerta e cuidar da rotina. A terapia caminha junto com o acompanhamento psiquiátrico, quando houver.',
     },
     {
       id: 'outras',
+      name: 'E outras mentes',
       title: 'Outras mentes fora do padrão',
       text: 'Se você sente que funciona diferente e ainda não tem um nome para isso, também tem lugar aqui.',
     },
@@ -193,8 +213,7 @@ export const AUDIENCES = {
 } as const;
 
 export const PILLARS = {
-  eyebrow: 'Como é a terapia comigo',
-  title: 'Um espaço seguro, do seu jeito',
+  title: { start: 'Um espaço seguro,', em: 'do seu jeito' } satisfies Title,
   // TODO(pilares): rascunho. A Iara precisa confirmar cada pilar antes de publicar.
   // Itens ainda NÃO incluídos, aguardando confirmação: câmera ligada ou desligada à escolha;
   // pausas durante a sessão; mensagens por texto entre sessões para combinados.
@@ -219,10 +238,8 @@ export const PILLARS = {
 } as const;
 
 export const HOW_IT_WORKS = {
-  eyebrow: 'Passo a passo',
-  title: 'Como funciona a terapia online',
+  title: { start: 'Como funciona', em: 'a terapia online' } satisfies Title,
   intro: 'Tudo acontece pela internet, sem precisar sair de casa.',
-  reassurance: 'Pode mandar só um "oi". Eu explico o resto.',
   steps: [
     {
       title: 'Você manda uma mensagem',
@@ -247,13 +264,12 @@ const crisisAnswer =
   'Não. A terapia online não é um serviço de urgência. Em situação de crise, ligue 188 (CVV, 24 horas e gratuito) ou 192 (SAMU), ou procure a emergência mais próxima.';
 
 export const FAQ = {
-  eyebrow: 'Dúvidas frequentes',
-  title: 'Perguntas que costumam aparecer',
+  title: { start: 'Dúvidas', em: 'frequentes' } satisfies Title,
   items: [
     {
       question: 'A terapia online funciona tão bem quanto a presencial?',
       answer:
-        'Pesquisas mostram que, para muitas pessoas, a terapia online tem resultados parecidos com os da presencial. Ela é regulamentada pelo Conselho Federal de Psicologia (Resolução CFP nº 11/2018). Para muitas pessoas neurodivergentes, estar no próprio espaço também ajuda a diminuir a sobrecarga.',
+        'Pesquisas mostram que, para muitas pessoas, a terapia online tem resultados parecidos com os da presencial. Ela é regulamentada pelo Conselho Federal de Psicologia (Resolução CFP nº 9/2024). Para muitas pessoas neurodivergentes, estar no próprio espaço também ajuda a diminuir a sobrecarga.',
     },
     {
       question: 'Preciso ter diagnóstico para fazer terapia com você?',
@@ -295,9 +311,8 @@ export const FAQ = {
 } as const;
 
 export const CONTACT_SECTION = {
-  eyebrow: 'Contato',
-  title: 'Vamos conversar?',
-  text: 'Para muitas pessoas, mandar mensagem é mais fácil do que ligar. Por isso o contato aqui é por texto. Escreva quando puder.',
+  title: { start: 'Pode mandar', em: 'só um “oi”.' } satisfies Title,
+  text: 'Para muitas pessoas, mandar mensagem é mais fácil do que ligar. Por isso o contato aqui é por texto. Eu explico o resto.',
   formTitle: 'Prefere deixar seus dados?',
   formIntro: 'Preencha o formulário e eu entro em contato pela forma que você escolher.',
 } as const;
@@ -314,6 +329,7 @@ export function instagramLink(): string | null {
   return CONTACT.instagram ? `https://www.instagram.com/${CONTACT.instagram}/` : null;
 }
 
-export function srcset(photo: Photo, ext: 'avif' | 'webp'): string {
-  return photo.widths.map((w) => `${photo.base}-${w}.${ext} ${w}w`).join(', ');
+/** Valor de ngSrcset a partir das larguras disponíveis. */
+export function ngSrcset(photo: Photo): string {
+  return photo.widths.map((w) => `${w}w`).join(', ');
 }

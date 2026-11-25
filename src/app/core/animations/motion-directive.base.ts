@@ -19,7 +19,7 @@ type MatchMedia = ReturnType<AnimationLibs['gsap']['matchMedia']>;
  * Base de todas as diretivas de animação.
  *
  * - Só roda no navegador.
- * - Reage em tempo real ao botão "Reduzir movimento": desligar → `revert()` (o elemento volta
+ * - Reage em tempo real ao `prefers-reduced-motion` do sistema: desligar → `revert()` (o elemento volta
  *   ao estado estático e visível); religar → recria a animação.
  * - Tudo é criado dentro de um `gsap.matchMedia()` com escopo no elemento, que limpa
  *   ScrollTriggers, tweens e SplitText ao trocar de breakpoint e no destroy.
@@ -70,7 +70,8 @@ export abstract class MotionDirectiveBase {
 
   /** O elemento já está na tela ou acima dela? (para não reanimar ao religar o movimento) */
   protected alreadySeen(el: Element = this.host): boolean {
-    if (this.firstBuild) return false;
+    // Na primeira montagem só pula a animação se o conteúdo já foi mostrado pelo failsafe.
+    if (this.firstBuild && !document.documentElement.classList.contains('anim-failsafe')) return false;
     return el.getBoundingClientRect().top < window.innerHeight;
   }
 

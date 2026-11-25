@@ -36,7 +36,7 @@
   </fieldset>
 
   <div class="field">
-    <label for="cf-contact">{{ contactLabel() }} <span aria-hidden="true">*</span></label>
+    <label for="cf-contact">{{ contactLabel() }}<span aria-hidden="true">&nbsp;*</span></label>
     <input id="cf-contact" formControlName="contact" required
       [attr.type]="channel() === 'email' ? 'email' : 'tel'"
       [attr.autocomplete]="channel() === 'email' ? 'email' : 'tel'"

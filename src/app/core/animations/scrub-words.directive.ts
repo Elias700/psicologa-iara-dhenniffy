@@ -19,6 +19,7 @@ export class ScrubWordsDirective extends MotionDirectiveBase {
         type: 'words',
         wordsClass: 'split-word',
         autoSplit: true,
+        aria: 'none',
         onSplit: (self) =>
           gsap.fromTo(
             self.words,

@@ -103,7 +103,7 @@ Legenda: ✅ usar como está · 🔧 usar suavizada · ❌ descartar
 | 46 | Banner de cookies (`initCookies`) | Load | — | — | ❌ | Sem rastreamento, sem banner (seção 5) |
 | 47 | Lottie da agência | Load | — | — | ❌ | Identidade do site original |
 
-### Comportamento com movimento reduzido (botão ou `prefers-reduced-motion`)
+### Comportamento com movimento reduzido (`prefers-reduced-motion`)
 
 Ficam desligados: 1, 12, 14, 16 (a cor troca sem transição), 21, 22, 28, 35, 38 e qualquer scrub. Os itens 4, 7, 8, 9, 10 e 24 viram **fade de 150ms**, sem deslocamento. O conteúdo aparece já visível, e a rolagem é a nativa.
 
@@ -187,3 +187,28 @@ Mudanças em relação ao plano acima, e o motivo de cada uma:
 **Garantias contra conteúdo preso:** cada elemento `[data-anim]` fica escondido só até a diretiva dele iniciar (`.anim-ready`). Se o app não iniciar em 4s, `.anim-failsafe` mostra tudo. Um `IntersectionObserver` mostra qualquer elemento que fique 1,2s na tela sem iniciar. Sem JS, nada fica escondido.
 
 **Rolagem até âncoras:** o `ScrollTrigger.refresh()` é adiado enquanto uma rolagem programada estiver em andamento, porque ele cancelava a rolagem suave nativa no celular. No fim, a posição é corrigida se o layout tiver mudado.
+
+## 7. Segunda versão visual (substitui a direção de arte das seções 3, 5 e 6)
+
+A primeira versão aproveitava só o movimento do modelo. Esta segue também a linguagem de cena dele, com identidade própria (cores, fontes, textos e imagens da Iara).
+
+| Recurso do modelo | Versão da Iara | Onde |
+| --- | --- | --- |
+| Hero em tela cheia com título gigante | Figura recortada sangrando na tela, sálvia, título em Instrument Serif | `hero` |
+| Cúpula que sobe com texto em curva | Cúpula verde sobre o hero fixo (CSS sticky, sem zoom) | `manifesto` |
+| Título sobreposto à imagem, metadados ao lado | "Oi, eu sou [retrato em arco] a Iara." e ficha profissional | `about` |
+| Cena horizontal | Colunata de arcos (`appHorizontalScroll`), só ≥ 1024 px, com altura definida em CSS | `who-i-help` |
+| Citação sobre imagem em tela cheia | Frase publicada pela própria Iara | `quote` |
+| Mapa com linha sinuosa | Passo a passo sobre linha que se desenha (`appDrawPath`) | `how-it-works` |
+| Selo circular giratório | Selo **estático** | `seal` |
+| Barra de rolagem customizada | Trilho lateral com percentual (`appScrollProgress`), só ≥ 1280 px | `header` |
+| Flores nos cantos | Ramos em SVG derivados das folhas da logo, estáticos | `sprig` |
+| Rodapé com marca gigante | Nome na largura da tela | `footer` |
+
+**Continua descartado:** loader, zoom de 2×, letras girando, rotação contínua, snap de seção, botão magnético, vídeo automático.
+
+**Movimento reduzido e celular:** sem cena fixa, sem rolagem horizontal, sem parallax; a colunata vira uma grade e a linha já aparece completa.
+
+**Paleta atual:** creme `#f6f1e4`, sálvia `#cdd2b8`, areia `#dcc797`, verde `#1d3628`, verde profundo `#14271c`, vermelho `#8a3324`, dourado `#d9b26a`, texto `#16241c`. Texto corrido sempre ≥ 7:1.
+
+**Botão "Reduzir movimento":** removido a pedido (nov/2026). O site segue o `prefers-reduced-motion` do sistema.

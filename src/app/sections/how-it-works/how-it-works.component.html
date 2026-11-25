@@ -1,30 +1,29 @@
-<section id="como-funciona" class="section" appSectionTheme="bg" aria-labelledby="como-funciona-title">
-  <div class="container grid">
-    <div class="intro">
-      <div class="intro-sticky">
-        <p class="eyebrow" appReveal>{{ content.eyebrow }}</p>
-        <h2 id="como-funciona-title" appSplitText>{{ content.title }}</h2>
-        <p class="lead" appReveal>{{ content.intro }}</p>
-        <p class="reassurance" appReveal>{{ content.reassurance }}</p>
+<section id="como-funciona" class="section" aria-labelledby="como-funciona-title">
+  <app-sprig class="sprig" />
 
-        <dl class="practical" appReveal>
-          @for (item of practical; track item.label) {
-            <div>
-              <dt>{{ item.label }}</dt>
-              <dd>{{ item.value }}</dd>
-            </div>
-          }
-        </dl>
-      </div>
-    </div>
+  <div class="container">
+    <header class="head">
+      <h2 id="como-funciona-title" appSplitText>
+        {{ content.title.start }} <em>{{ content.title.em }}</em>
+      </h2>
+      <p class="lead" appReveal>{{ content.intro }}</p>
+    </header>
 
-    <div class="steps-wrap" appStepsProgress>
-      <div class="steps-line" aria-hidden="true"><span class="steps-line-fill"></span></div>
-      <ol class="steps" role="list">
+    <div class="route" appDrawPath>
+      <svg class="wave" viewBox="0 0 1200 220" aria-hidden="true" focusable="false">
+        <path class="ghost" d="M14 86C134 86 190 178 314 178S480 44 614 44 780 150 914 150 1090 70 1230 70" />
+        <path data-draw d="M14 86C134 86 190 178 314 178S480 44 614 44 780 150 914 150 1090 70 1230 70" />
+        <circle cx="14" cy="86" r="9" />
+        <circle cx="314" cy="178" r="9" />
+        <circle cx="614" cy="44" r="9" />
+        <circle cx="914" cy="150" r="9" />
+      </svg>
+
+      <ol role="list" class="steps" appReveal [revealChildren]="true">
         @for (step of content.steps; track step.title; let i = $index) {
-          <li class="step" data-step appReveal>
-            <span class="number" aria-hidden="true">{{ (i + 1).toString().padStart(2, '0') }}</span>
-            <div class="step-body">
+          <li>
+            <span class="number" aria-hidden="true">{{ i + 1 }}</span>
+            <div>
               <h3><span class="visually-hidden">Passo {{ i + 1 }}: </span>{{ step.title }}</h3>
               <p>{{ step.text }}</p>
             </div>
@@ -32,5 +31,16 @@
         }
       </ol>
     </div>
+
+    @if (practical.length) {
+      <dl class="practical" appReveal>
+        @for (item of practical; track item.label) {
+          <div>
+            <dt>{{ item.label }}</dt>
+            <dd>{{ item.value }}</dd>
+          </div>
+        }
+      </dl>
+    }
   </div>
 </section>
