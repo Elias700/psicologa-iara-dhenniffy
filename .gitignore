@@ -45,3 +45,5 @@ Thumbs.db
 
 # Site de referência (vibecloner): só para estudo local, conteúdo de terceiros. Nunca versionar.
 /src/clone/
+
+.vercel

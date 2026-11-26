@@ -1,0 +1,7 @@
+src/clone
+node_modules
+dist
+.angular
+.vscode
+docs
+*.zip
