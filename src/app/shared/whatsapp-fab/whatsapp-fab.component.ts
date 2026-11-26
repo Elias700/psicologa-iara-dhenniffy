@@ -6,7 +6,7 @@ import { IconComponent } from '../icon/icon.component';
 /**
  * Botão flutuante de WhatsApp, discreto: sem pulsar, sem chamar atenção.
  * Fica sempre visível no canto inferior direito.
- * Só existe se o número estiver configurado em site-content.ts.
+ * Enquanto o número não estiver configurado em site-content.ts, leva à seção de contato.
  */
 @Component({
   selector: 'app-whatsapp-fab',
@@ -18,6 +18,12 @@ import { IconComponent } from '../icon/icon.component';
         <app-icon name="whatsapp" />
         <span class="text">WhatsApp</span>
         <span class="visually-hidden"> — conversar com a Iara (abre o WhatsApp)</span>
+      </a>
+    } @else {
+      <a class="fab" href="/#contato">
+        <app-icon name="whatsapp" />
+        <span class="text">WhatsApp</span>
+        <span class="visually-hidden"> — ir para o formulário de contato</span>
       </a>
     }
   `,
